@@ -5,7 +5,7 @@ function getHostUrl() {
     return 'http://127.0.0.1:3000/api/v1/';
   }
   console.log('remote host');
-  return '/api/v1/';
+  return 'https://sendit-postgres.herokuapp.com/api/v1/';
 }
 
 function getCookie(cname) {

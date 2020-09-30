@@ -4,13 +4,14 @@ const url = API.getHostUrl();
 const token = API.getCookie('session_');
 const form = document.querySelector('form');
 const submit = document.querySelector('#submit');
-// const edit = document.querySelector('.edit');
+const record = document.querySelector('.order-record');
 const parcels = {};
 let cell0;
 let formData;
 let search;
 let row;
 
+let count = 0;
 API.autoRedirect();
 
 function insertnewRow(data) {
@@ -70,6 +71,10 @@ window.addEventListener('load', async () => {
         parcels[i] = data.rows[i].id;
         cell0.innerHTML = i + 1;
         console.log(cell0.innerHTML);
+        if (data.rows[i].status !== 'delivered') {
+          count += 1;
+        }
+        records(data, count, (data.rowCount - count));
       }
       API.setCookie('parcels', JSON.stringify(parcels), 1);
     }
@@ -194,3 +199,17 @@ form.addEventListener('submit', async () => {
   updateParcel();
   resetForm();
 });
+
+function records(total, pedinging, delivered) {
+  record.innerHTML = `
+  <div class="pending">
+      Pending Order: ${pedinging}
+  </div>
+  <div class="delivered">
+      Order Delivered: ${delivered}
+  </div>
+  <div class="total">
+      My total Order: ${total.rowCount}
+  </div>
+  `;
+}

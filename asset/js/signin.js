@@ -1,7 +1,6 @@
 import API from './host.js';
 
 const form = document.querySelector('.form');
-// const url = 'http://127.0.0.1:3000/api/v1/';
 let url;
 const notiPanel = document.querySelector('.noti-panel');
 const notification = document.querySelector('.notification');
