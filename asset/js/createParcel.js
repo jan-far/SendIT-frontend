@@ -1,4 +1,4 @@
-import API from './host';
+import API from './host.js';
 
 const url = API.getHostUrl();
 const token = API.getCookie('session_');
