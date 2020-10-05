@@ -6,6 +6,7 @@ const profileDetails = document.querySelector('.profile-details');
 const record = document.querySelector('.order-record');
 const profileInfo = document.querySelector('.profile-info');
 const token = API.getCookie('session_');
+const pTable = document.querySelector('#parcelTable')
 const pBody = document.querySelector('.parcelBody');
 
 API.autoRedirect();
@@ -41,7 +42,7 @@ function insertParcel(data) {
   const newRow = table.insertRow(table.length);
 
   const cell1 = newRow.insertCell(0);
-  cell1.innerHTML = data.email;
+  cell1.innerHTML = data.recipient;
 
   const cell2 = newRow.insertCell(1);
   cell2.innerHTML = data.weight;
@@ -77,8 +78,10 @@ window.onload = async () => {
       console.log('error occured');
     } else if (data.rows === [] || data.rowCount === 0) {
       console.log('an empty data');
+      pTable.classList.add('disable')
       pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
     } else {
+      pTable.classList.remove('disable')
       for (let i = 0; i < data.rowCount; i += 1) {
         insertParcel(data.rows[i]);
         if (data.rows[i].status !== 'delivered') {
@@ -95,8 +98,10 @@ window.onload = async () => {
 
 profileDetails.addEventListener('toggle', async (e) => {
   if (e.target.open === false) {
+    profileDetails.classList.remove('above')
     return;
   }
+  profileDetails.classList.add('above')
   try {
     const res = await fetch(`${url}users`, {
       headers: {

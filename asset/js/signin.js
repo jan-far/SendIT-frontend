@@ -48,13 +48,15 @@ form.addEventListener('submit', async (e) => {
       notiPanel.style.display = 'flex';
       notification.innerHTML = `${res.message}`;
     } else {
-      console.log(data);
+      // console.log(data);
       notiPanel.classList.add('successful');
       notiPanel.classList.remove('failed');
       notiPanel.style.display = 'flex';
       notification.innerHTML = `${res.message}`;
       API.setCookie('session_', `${res.Profile.token}`, 3);
-      window.location.href = '../UI/dashboard.html';
+      setTimeout(function () {
+        window.location.href = '../UI/dashboard.html';
+     }, 3000); 
       return;
     }
   } catch (err) {

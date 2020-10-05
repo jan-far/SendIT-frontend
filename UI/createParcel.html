@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Send your parcel to anywhere in the world">
     <link rel="stylesheet" href="../asset/css/createParcel.css">
-    <!-- <link rel="stylesheet" href="../asset/css/body.css"> -->
-    <title>Welcome Back</title>
+    <link rel="stylesheet" href="../asset/css/intlTelInput.css">
+    <title>Create Parcel</title>
 </head>
 
 <body>
@@ -50,7 +50,6 @@
         </nav>
     </header>  
         
-          
     <div class="container">
         <div class="parcel-delivery">
             <div class="order-form">
@@ -59,22 +58,22 @@
                 </div>
                 <form action="#" onsubmit="event.preventDefault();">
                     <div class="form-field">
-                        <input type="email" name="email" id="email" placeholder="Your Email">
+                        <input type="text" name="recipient" id="recipient" placeholder="Recipient Name" required>
                     </div>
                     <div class="form-field">
-                        <input type="text" name="destination" id="destination" placeholder="Destination">
+                        <input type="text" name="destination" id="destination" placeholder="Destination" required>
                     </div>
                     <div class="form-field">
-                        <input type="number" name="weight" id="weight" placeholder="Weight">
+                        <input type="number" name="weight" id="weight" placeholder="Weight in KG" required>
                     </div>
                     <div class="form-field">
-                        <input type="tel" name="phone" id="phoneNo" placeholder="Recipient phone number">
+                        <input type="tel" name="phone" id="phone" placeholder="Recipient phone number" required>
                     </div>
                     <div class="form-field">
-                        <input type="text" name="location" id="pickup" placeholder="Pickup location">
+                        <input type="text" name="location" id="pickup" placeholder="Pickup location" required>
                     </div>
                     <div class="form-field">
-                        <input type="submit" name="submit" id="submit" value="Create Order">
+                        <input type="submit" name="submit" id="submit" value="Create Order" required>
                     </div>
                 </form>
                 <div class="order-record">
@@ -94,7 +93,7 @@
                     <thead>
                         <tr>
                             <th>S/N</th>
-                            <th>Email</th>
+                            <th>Recipient</th>
                             <th>weight</th>
                             <th>City of Destination</th>
                             <th>Pickup location</th>
@@ -112,6 +111,8 @@
             </div>
         </div>
     </div>
+    <script  src="../asset/js/intlTelInput.js"></script>
+    <script src="../asset/js/number.js"></script>
     <script src="../asset/js/toggle.js"></script>
     <script type="module" src="../asset/js/createParcel.js"></script>
     <script src="../asset/js/fetchParcel.js"></script>

@@ -1,14 +1,5 @@
 import API from './host.js';
 
-const input = document.querySelector('#phone');
-const IntNumber = window.intlTelInput(input, {
-  utilsScript: '../asset/js/utils.js',
-});
-
-window.intlTelInput(input, {
-  preferredCountries: ['ng'],
-});
-
 const url = API.getHostUrl();
 const form = document.querySelector('.form');
 const modelText = document.querySelector('.model-text');
@@ -39,7 +30,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     search.append(pair[0], pair[1]);
-    // console.log(pair[0], pair[1]);
+    console.log(pair[0], pair[1]);
   }
 
   try {
@@ -53,12 +44,22 @@ form.addEventListener('submit', async (e) => {
     const res = await signup.json();
     const data = await res;
 
-    if (data) {
-      // console.log(data);
+    if (data.status === 400) {
+      console.log(res);
       modelText.innerHTML = `${data.message}`;
       modal.style.display = 'flex';
       modelText.style.transition = '2s linear';
+      // setInterval(redirect(), 1000)
       return;
+    } else if (data.status === 200){
+      console.log(res);
+      modelText.innerHTML = `${data.message}`;
+      modal.style.display = 'flex';
+      modelText.style.transition = '2s linear';
+      API.setCookie('session_', `${res.Token}`, 3);
+      setTimeout(function () {
+        window.location.href = '../UI/dashboard.html';
+     }, 3000); 
     }
   } catch (err) {
     console.log(err);

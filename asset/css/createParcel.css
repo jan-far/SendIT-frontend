@@ -19,9 +19,9 @@ header {
 
 nav {
     display: grid;
-    grid-template-columns: .8fr .3fr;
+    grid-template-columns: 1fr .8fr .3fr;
     padding: 15px 20px 15px 20px;
-    background-color: #333;
+    background: linear-gradient(darkviolet, purple);
     align-items: center;
 }
 
@@ -190,6 +190,7 @@ form {
     border: black solid;
     justify-content: center;
     align-content: center;
+    margin-bottom: 10px;
 }
 
 .form-field {
@@ -200,6 +201,10 @@ form {
     padding: 5px;
     display: flex;
     flex-direction: column;
+}
+
+#phone {
+    width: 100%;
 }
 
 #submit {
@@ -222,6 +227,8 @@ th {
     color: white;
     text-align: center;
     width: 10em;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 button {
@@ -233,10 +240,13 @@ button {
     padding: 5px;
 }
 
-
 @media(min-width:993px) {
     nav {
-        grid-template-columns: .9fr .3fr auto;
+        grid-template-columns:1fr 1fr 1fr;
+    }
+
+    .navbar {
+        grid-column: 3;
     }
 }
 
@@ -247,13 +257,19 @@ button {
 }
 
 @media(max-width:780px) {
+    /* body {
+        width: 80%;
+    } */
+
     nav {
-        /* width: 100%; */
-        grid-template-columns: .2fr 0.9fr;
+        grid-template-columns: repeat(5, 1fr);
         padding: 5px;
         align-items: center;
-        /* display: none; */
         text-align: center;
+    }
+
+    .navbar-brand {
+        grid-column: 1;
     }
 
     .navbar {
@@ -264,6 +280,7 @@ button {
         display: inline-block;
         cursor: pointer;
         justify-self: right;
+        grid-column: 5;
     }
 
     .show {
@@ -275,28 +292,45 @@ button {
     }
 
     .container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(1, 1fr);
         margin-top: 20px;
     }
 
     .parcel-delivery {
-        /* align-content: center; */
+        display: flex;
         flex-direction: column;
+        grid-column: 3;
+        /* grid-template-columns: repeat(5, 1fr); */
         margin-top: 60px;
+        /* width: 80%; */
     }
 
     .order-form {
-        display: flex;
-        flex-direction: column;
-        border: black solid;
+        margin-left: 30%;
+        grid-column: 3;
+        grid-row: 1;
+        justify-items: center;
         justify-content: center;
-        align-content: center;
-        padding-right: 0px;
     }
 
-    /* #parcelTable{
-        display: flex;
-        flex-direction: column;
-    } */
+    .form-title>p {
+        margin-left: -50px;
+    }
+
+    form {
+        width: 80%;
+        align-self: center;
+        justify-self: center;
+        align-items: center;
+    }
+
+    .my-order {
+        grid-row: 2;
+        grid-column: 3;
+
+    }
 
     table tbody tr td{
         overflow: auto;

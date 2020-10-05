@@ -12,18 +12,27 @@ let search;
 let row;
 
 let count = 0;
+const l = Object.keys(JSON.parse(API.getCookie('parcels'))).length
 API.autoRedirect();
+
+// const input = document.querySelector('#phone');
+// const IntNumber = window.intlTelInput(input, {
+//   nationalMode: true,
+//   utilsScript: './utils.js',
+// });
+
+// window.intlTelInput(input, {
+//   preferredCountries: ['ng'],
+// });
 
 function insertnewRow(data) {
   const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0];
   const newRow = table.insertRow(table.length);
 
   cell0 = newRow.insertCell(0);
-  // console.log(cell0)
-  // sessionStorage.setItem('cell0', cell0.innerHTML)
 
   const cell1 = newRow.insertCell(1);
-  cell1.innerHTML = data.email;
+  cell1.innerHTML = data.recipient;
 
   const cell2 = newRow.insertCell(2);
   cell2.innerHTML = data.weight;
@@ -47,7 +56,7 @@ function insertnewRow(data) {
   cell8.innerHTML = '<button onclick="Delete(this)" >Cancel Order</button>';
 }
 
-window.addEventListener('load', async () => {
+async function getParcels() {
   try {
     const res = await fetch(`${url}parcels`, {
       headers: {
@@ -57,66 +66,71 @@ window.addEventListener('load', async () => {
       method: 'GET',
     });
     const result = await res.json();
-    const data = result;
+    return result;
 
-    if (!result) {
-      console.log('error occured');
-    } else if (data.rows === [] || data.rowCount === 0) {
-      console.log('an empty data');
-      // pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
-    } else {
-      for (let i = 0; i < data.rowCount; i++) {
-        insertnewRow(data.rows[i]);
-        // console.log(data.rows[i]);
-        parcels[i] = data.rows[i].id;
-        cell0.innerHTML = i + 1;
-        console.log(cell0.innerHTML);
-        if (data.rows[i].status !== 'delivered') {
-          count += 1;
-        }
-        records(data, count, (data.rowCount - count));
-      }
-      API.setCookie('parcels', JSON.stringify(parcels), 1);
-    }
+    // if (!result) {
+    //   console.log('error occured');
+    // } else if (data.rows === [] || data.rowCount === 0) {
+    //   console.log('an empty data');
+    //   // pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
+    // } else {
+    //   for (let i = 0; i < data.rowCount; i++) {
+    //     insertnewRow(data.rows[i]);
+    //     // console.log(data.rows[i]);
+    //     parcels[i] = data.rows[i].id;
+    //     cell0.innerHTML = i + 1;
+    //     // console.log(cell0.innerHTML);
+    //     if (data.rows[i].status !== 'delivered') {
+    //       count += 1;
+    //     }
+    //     records(data, count, (data.rowCount - count));
+    //   }
+    //   API.setCookie('parcels', JSON.stringify(parcels), 1);
+    // }
   } catch (err) {
     console.log(err);
   }
-  // function onFormSubmit() {
-  //   if (submit.value == null)
-  //     insertnewRow(formData)
-  //   else
-  //     Update(formData);
-
-  //   resetForm();
-  // }
-});
-
-function readFormData() {
-  let formData = {};
-  const email = document.querySelector('#email').value;
-  const destination = document.querySelector('#destination').value;
-  const weight = document.querySelector('#weight').value;
-  const phone = document.querySelector('#phoneNo').value;
-  const pick = document.querySelector('#pickup').value;
-
-  formData = {
-    email,
-    destination,
-    weight,
-    phone,
-    pick,
-  };
-  return formData;
 }
 
+window.addEventListener('load', async () => {
+  const result = await getParcels()
+  const data = result
+
+  if (!result) {
+    console.log('error occured');
+  } else if (data.rows === [] || data.rowCount === 0) {
+    console.log('an empty data');
+    // pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
+  } else {
+    for (let i = 0; i < data.rowCount; i++) {
+      insertnewRow(data.rows[i]);
+      // console.log(data.rows[i]);
+      parcels[i] = data.rows[i].id;
+      cell0.innerHTML = i + 1;
+      // console.log(cell0.innerHTML);
+      if (data.rows[i].status !== 'delivered') {
+        count += 1;
+      }
+      records(data, count, (data.rowCount - count));
+    }
+    API.setCookie('parcels', JSON.stringify(parcels), 1);
+  }
+});
+
 function resetForm() {
-  document.querySelector('#email').value = '';
+  document.querySelector('#recipient').removeAttribute('disabled', true);
+  document.querySelector('#weight').removeAttribute('disabled', true);
+  document.querySelector('#pickup').removeAttribute('disabled', true);
+  document.querySelector('#phone').removeAttribute('disabled', true);
+
+  document.querySelector('#recipient').value = '';
   document.querySelector('#weight').value = '';
   document.querySelector('#destination').value = '';
   document.querySelector('#pickup').value = '';
-  document.querySelector('#phoneNo').value = '';
-  document.querySelector('#submit').value = 'Create Order';
-  // selectedRow = null;
+  document.querySelector('#phone').value = '';
+  document.querySelector('#submit').value = 'Create Oder';
+  selectedRow = null;
+
 }
 
 async function updateParcel() {
@@ -124,13 +138,14 @@ async function updateParcel() {
   row = sessionStorage.getItem('selected');
 
   const c = row;
-  console.log(c, row);
+  console.log(selectedRow, row);
 
   formData = new FormData(form);
   search = new URLSearchParams();
 
   for (const pair of formData) {
     search.append(pair[0], pair[1]);
+    selectedRow.cells[3].innerHTML = pair[1]
     // console.log(pair[0], pair[1]);
   }
 
@@ -146,7 +161,8 @@ async function updateParcel() {
     const result = await res.json();
 
     if (result) {
-      console.log(result.message);
+      console.log('Updated');
+      resetForm()
     }
   } catch (err) {
     console.log(err);
@@ -155,7 +171,8 @@ async function updateParcel() {
 
 form.addEventListener('submit', async () => {
   if (submit.value !== 'Update Destination') {
-    insertnewRow(readFormData());
+    // insertnewRow(readFormData());
+    // cell0.innerHTML =  `${l + 1}`
     console.log(cell0);
 
     formData = new FormData(form);
@@ -170,13 +187,14 @@ form.addEventListener('submit', async () => {
       const signup = await fetch(`${url}parcels`, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'x-access-token': token,
+          'x-access-token': `${token}`,
         },
         method: 'POST',
         body: search,
       });
       const res = await signup.json();
       const data = await res;
+      console.log(data)
       resetForm();
 
       if (!res) {
@@ -185,25 +203,26 @@ form.addEventListener('submit', async () => {
         console.log('an empty data');
         // pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
       } else {
-        for (let i = 0; i < data.rowCount; i++) {
-          insertnewRow(data.rows[i]);
-        }
+        insertnewRow(data.Parcel);
+        cell0.innerHTML = `${l + 1}`
+        refresh()
+        // parcels[l + 1] = data.Parcel.id;
         return;
       }
     } catch (err) {
       console.log(err);
       return err;
     }
+  } else {
+    updateParcel();
+    resetForm();
   }
-
-  updateParcel();
-  resetForm();
 });
 
-function records(total, pedinging, delivered) {
+function records(total, pending, delivered) {
   record.innerHTML = `
   <div class="pending">
-      Pending Order: ${pedinging}
+      Pending Order: ${pending}
   </div>
   <div class="delivered">
       Order Delivered: ${delivered}
@@ -212,4 +231,20 @@ function records(total, pedinging, delivered) {
       My total Order: ${total.rowCount}
   </div>
   `;
+}
+
+async function refresh() {
+  const result = await getParcels()
+  const data = result;
+
+  for (let i = 0; i < data.rowCount; i++) {
+    parcels[i] = data.rows[i].id;
+    // cell0.innerHTML = i + 1;
+    // console.log(cell0.innerHTML);
+    if (data.rows[i].status !== 'delivered') {
+      // count += 1;
+      records(data, count + 1, (0));
+    } records(data, count, (data.rowCount - count))
+  }
+  API.setCookie('parcels', JSON.stringify(parcels), 1);
 }
