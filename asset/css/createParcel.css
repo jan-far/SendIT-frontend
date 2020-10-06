@@ -164,7 +164,7 @@ nav {
 .container {
     display: flex;
     width: inherit;
-    flex-wrap: wrap;
+    margin-top: 20px;
     align-content: center;
     justify-content: center;
 }
@@ -172,10 +172,23 @@ nav {
 .parcel-delivery {
     display: flex;
     margin-top: 6em;
+    flex-direction: column;
 }
 
-.order-form {
-    padding-right: 20px;
+.create-order {
+    width: 20%;
+    align-self: center;
+    margin: 10px 0px 15px 0px;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: rgb(161, 20, 20);
+    color: wheat;
+    font-weight: bold;
+}
+
+.create-order:hover {
+    cursor: pointer;
+    background-color: forestgreen;
 }
 
 .form-title {
@@ -204,7 +217,7 @@ form {
 }
 
 #phone {
-    width: 100%;
+    width: 80%;
 }
 
 #submit {
@@ -223,7 +236,7 @@ table {
 }
 
 th {
-    background-color: black;
+    background-color: rgb(75, 54, 2);
     color: white;
     text-align: center;
     width: 10em;
@@ -231,14 +244,69 @@ th {
     padding-left: 10px;
 }
 
+td {
+    padding: 5px;
+}
+
+.records {
+    margin-top: 15px;
+    align-self: center;
+    background-color: rgb(150, 116, 32);
+    padding: 8px;
+    color: wheat;
+
+}
+
+.records div {
+    padding: 2px;
+    margin: 5px;
+    background-color: rgb(7, 255, 28);
+    color: black;
+}
+
 button {
     color: black;
     border-radius: 5px;
-    background-color: lightgrey;
+    background-color: rgb(184, 157, 157);
     cursor: pointer;
     border: 1px solid;
     padding: 5px;
 }
+
+.bg-modal {
+	background-color: rgba(0, 0, 0, 0.8);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+    top: 0;
+    left: 0;
+	display: none;
+	justify-content: center;
+    align-items: center;
+}
+
+.modal-contents {
+	background-color: white;
+	text-align: center;
+	padding: 35px;
+	position: relative;
+    border-radius: 4px;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 42px;
+    color: #6b6767;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    cursor: pointer;
+  }
+
+.close:hover {
+    color: #000000;
+  }
 
 @media(min-width:993px) {
     nav {
@@ -256,13 +324,59 @@ button {
     }
 }
 
-@media(max-width:780px) {
-    /* body {
-        width: 80%;
-    } */
+@media screen and (max-width:400px) {
+    .container {
+        position: fixed;
+        background-color: forestgreen;
+    }
+    
+    .parcel-delivery {
+        display: grid!important;
+        grid-template-columns: repeat(3, .5fr);
+        grid-template-rows: repeat(4, .25fr);
+        /* position: fixed; */
+        /* margin-left: 0px;
+        padding-left: 0px; */
+        background-color: fuchsia;
+    }
 
+    .order-form {
+        grid-column: 2!important;
+        grid-row: 1;
+        /* margin-bottom: -5px; */
+    }
+
+    .create-order {
+        margin-top: -120px;
+        margin-bottom: -120px;
+        /* width: unset; */
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .my-order {
+        grid-row: 3!important;
+        grid-column: 2!important;
+        width: 80%;
+        /* align-self: center;
+        justify-self: center; */
+        /* align-items: center!important; */
+    }
+
+    table {
+        overflow-x: scroll;
+    }
+
+    .records {
+        margin-top: 10px;
+        grid-row: 4;
+        grid-column: 2;
+    }
+} 
+
+@media screen and (max-width:780px) {
     nav {
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: .1fr repeat(4, 1fr);
         padding: 5px;
         align-items: center;
         text-align: center;
@@ -292,44 +406,40 @@ button {
     }
 
     .container {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(1, 1fr);
+        /* display: grid; */
+        /* grid-template-columns: repeat(5, 1fr); */
+        /* grid-template-rows: repeat(1, 1fr); */
         margin-top: 20px;
     }
 
     .parcel-delivery {
         display: flex;
         flex-direction: column;
-        grid-column: 3;
-        /* grid-template-columns: repeat(5, 1fr); */
-        margin-top: 60px;
-        /* width: 80%; */
-    }
-
-    .order-form {
-        margin-left: 30%;
-        grid-column: 3;
-        grid-row: 1;
-        justify-items: center;
-        justify-content: center;
-    }
-
-    .form-title>p {
-        margin-left: -50px;
+        margin-top: 75px;
     }
 
     form {
-        width: 80%;
+        width: 90%;
         align-self: center;
         justify-self: center;
-        align-items: center;
+        align-items: center!important;
+    }
+
+    .form-field input {
+        padding: 5px;
+        display: flex;
+        width: 110%;
+        margin-left: -10px;
+        flex-direction: column;
+    }
+
+    #phone {
+        width: 100%;
     }
 
     .my-order {
         grid-row: 2;
         grid-column: 3;
-
     }
 
     table tbody tr td{

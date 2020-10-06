@@ -14,20 +14,20 @@
     <header>
         <nav>
             <a class="navbar-brand" href="index.html">
-                <img class="img-responsive" src="../asset/img/connection-world-map-point.jpg" width="80px" alt="SendIT logo">
+                <img class="img-responsive" src="../asset/img/logo.jpg" width="80px" alt="SendIT logo">
             </a>
             <div class="navbar">
                 <a href="./home.html">Home</a>
                 <a href="getQuotes.html">Get Quotation</a>
                 <div class="dropdown">
-                  <button class="dropbtn">My Account
-                    <!-- <i class="fa fa-caret-down"></i> -->
-                  </button>
-                  <div class="dropdown-content">
-                    <a href="#">Profile</a>
-                    <a href="#">Dashboard</a>
-                    <a class="btn logout" href="../index.html">Logout</a>
-                  </div>
+                    <button class="dropbtn">My Account
+                        <!-- <i class="fa fa-caret-down"></i> -->
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#">Profile</a>
+                        <a href="#">Dashboard</a>
+                        <a class="btn logout" href="../index.html">Logout</a>
+                    </div>
                 </div>
             </div>
             <div class="bar-container" onclick="toggler(this)">
@@ -38,7 +38,7 @@
 
             <!-- side navigation -->
             <div class="side-dropdown">
-                <a  href="./home.html">Home</a>
+                <a href="./home.html">Home</a>
                 <button class="dropbtn" onclick="myFunction()"> My account</button>
                 <div id="myDropdown" class="dropdown-content">
                     <a class="nav-link" href="#">Get Quotes</a>
@@ -48,44 +48,39 @@
                 </div>
             </div>
         </nav>
-    </header>  
-        
+    </header>
+
     <div class="container">
         <div class="parcel-delivery">
             <div class="order-form">
-                <div class="form-title">
+                <div class="form-title modal-content">
                     <p>ORDERS AND DELIVERIES </p>
                 </div>
-                <form action="#" onsubmit="event.preventDefault();">
-                    <div class="form-field">
-                        <input type="text" name="recipient" id="recipient" placeholder="Recipient Name" required>
-                    </div>
-                    <div class="form-field">
-                        <input type="text" name="destination" id="destination" placeholder="Destination" required>
-                    </div>
-                    <div class="form-field">
-                        <input type="number" name="weight" id="weight" placeholder="Weight in KG" required>
-                    </div>
-                    <div class="form-field">
-                        <input type="tel" name="phone" id="phone" placeholder="Recipient phone number" required>
-                    </div>
-                    <div class="form-field">
-                        <input type="text" name="location" id="pickup" placeholder="Pickup location" required>
-                    </div>
-                    <div class="form-field">
-                        <input type="submit" name="submit" id="submit" value="Create Order" required>
-                    </div>
-                </form>
-                <div class="order-record">
-                    <div class="pending">
-                        Pending Order:
-                    </div>
-                    <div class="delivered">
-                        Order Delivered
-                    </div>
-                    <div class="total">
-                        My total Order:
-                    </div>
+            </div>
+            <button class="create-order">Create Order</button>
+            <div class="bg-modal">
+                <div class="order-form modal-contents">
+                    <div class="close">+</div>
+                    <form action="#" onsubmit="event.preventDefault();">
+                        <div class="form-field">
+                            <input type="text" name="recipient" id="recipient" placeholder="Recipient Name" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="text" name="destination" id="destination" placeholder="Destination" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="number" name="weight" id="weight" placeholder="Weight in KG" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="tel" name="phone" id="phone" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="text" name="location" id="pickup" placeholder="Pickup location" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="submit" name="submit" id="submit" value="Create Order" required>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="my-order">
@@ -109,9 +104,13 @@
                 </table>
                 <p class="parcelBody"></p>
             </div>
+            <details class="records">
+                <summary>Order records</summary>
+                <p class="order-record"></p>
+            </details>
         </div>
     </div>
-    <script  src="../asset/js/intlTelInput.js"></script>
+    <script src="../asset/js/intlTelInput.js"></script>
     <script src="../asset/js/number.js"></script>
     <script src="../asset/js/toggle.js"></script>
     <script type="module" src="../asset/js/createParcel.js"></script>

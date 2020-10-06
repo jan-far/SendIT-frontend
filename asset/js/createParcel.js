@@ -5,6 +5,10 @@ const token = API.getCookie('session_');
 const form = document.querySelector('form');
 const submit = document.querySelector('#submit');
 const record = document.querySelector('.order-record');
+const modal = document.querySelector('.bg-modal');
+const pTable = document.querySelector('#parcelTable')
+const pBody = document.querySelector('.parcelBody');
+const createOrder = document.querySelector('.create-order')
 const parcels = {};
 let cell0;
 let formData;
@@ -24,6 +28,14 @@ API.autoRedirect();
 // window.intlTelInput(input, {
 //   preferredCountries: ['ng'],
 // });
+
+createOrder.addEventListener("click", () => {
+	modal.style.display = "flex";
+});
+
+document.querySelector('.close').addEventListener("click", () => {
+	modal.style.display = "none";
+});
 
 function insertnewRow(data) {
   const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0];
@@ -100,8 +112,10 @@ window.addEventListener('load', async () => {
     console.log('error occured');
   } else if (data.rows === [] || data.rowCount === 0) {
     console.log('an empty data');
-    // pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
+    pTable.classList.add('disable')
+    pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
   } else {
+    pTable.classList.remove('disable')
     for (let i = 0; i < data.rowCount; i++) {
       insertnewRow(data.rows[i]);
       // console.log(data.rows[i]);
@@ -244,7 +258,8 @@ async function refresh() {
     if (data.rows[i].status !== 'delivered') {
       // count += 1;
       records(data, count + 1, (0));
-    } records(data, count, (data.rowCount - count))
+    } 
+    records(data, count, (data.rowCount - count))
   }
   API.setCookie('parcels', JSON.stringify(parcels), 1);
 }
