@@ -1,4 +1,11 @@
 let selectedRow;
+const modal = document.querySelector('.bg-modal');
+const nav = document.querySelector('nav');
+
+function autocompletePlace() {
+  const input = document.querySelector('.place')
+  const autocomplete = new google.maps.places.Autocomplete(input);
+}
 
 function getHostUrl() {
   if (window.location.host.indexOf('localhost') === 0 ||
@@ -56,6 +63,7 @@ function resetForm() {
 }
 
 function Edit(td) {
+  modal.style.display = "flex";
   selectedRow = td.parentElement.parentElement;
   sessionStorage.setItem('selected', selectedRow.cells[0].innerHTML);
 
@@ -154,4 +162,56 @@ async function refresh() {
     // console.log(cell0.innerHTML);
   }
   // API.setCookie('parcels', JSON.stringify(parcels), 1);
+}
+
+function mEdit(td) {
+  modal.style.display = "initial";
+  nav.style.display = "none"
+  selectedRow = td.parentElement;
+
+  document.querySelector('#recipient').setAttribute('disabled', true);
+  document.querySelector('#weight').setAttribute('disabled', true);
+  document.querySelector('#pickup').setAttribute('disabled', true);
+  document.querySelector('#phone').setAttribute('disabled', true);
+
+  document.querySelector('#recipient').value = document.querySelector('.recipient').textContent.split(':')[1];
+  document.querySelector('#weight').value = document.querySelector('.weight').textContent.split(':')[1];
+  document.getElementById('destination').value = document.querySelector('.destination').textContent.split(':')[1];
+  document.querySelector('#pickup').value = document.querySelector('.location').textContent.split(':')[1];
+  document.querySelector('#phone').value = document.querySelector('.phone').textContent.split(':')[1];
+
+  document.querySelector('#submit').value = 'Update Destination';
+}
+
+function mDelete(td) {
+  if (confirm('Are you sure to delete this record?')) {
+    row = td.parentElement.parentElement;
+    document.getElementById('parcelTable').deleteRow(row.rowIndex);
+    // refresh();
+    mdeleteParcel(td);
+  }
+};
+
+async function mdeleteParcel(td) {
+  const currentParcel = JSON.parse(getCookie('parcels'));
+  row = sessionStorage.getItem('selected');
+  const c = row;
+  // refresh()
+  // console.log(c, currentParcel);
+  try {
+    const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/cancel`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-access-token': `${token}`,
+      },
+      method: 'DELETE',
+    });
+    const result = await res.json();
+    const data = await result;
+
+    console.log(data);
+
+  } catch (err) {
+    console.log(err);
+  }
 }

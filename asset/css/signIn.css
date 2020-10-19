@@ -12,6 +12,7 @@ body {
     background-size: cover;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 .signIn {
@@ -169,7 +170,7 @@ fieldset>p>a:hover {
 @media screen and (max-width: 968px) {
     * {
         box-sizing: border-box;
-        overflow: hidden;
+        overflow-x: hidden;
         outline: none;
     }
 
@@ -200,9 +201,10 @@ fieldset>p>a:hover {
         align-content: center;
         justify-items: center;
         align-self: center;
-    }
-
-    fieldset {
+      }
+      
+      fieldset {
+        background-color: lawngreen!important;
         padding: 10px 20px;
         align-content: center;
         width: 70% !important;
@@ -212,7 +214,7 @@ fieldset>p>a:hover {
         border: 1px solid #CCC !important;
         border-radius: 2px;
         padding: 10px;
-        width: 100%;
+        width: 350px;
         font: 1em sans-serif;
     }
 
@@ -250,12 +252,25 @@ fieldset>p>a:hover {
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 400px) {
     fieldset {
         padding: 10px 20px;
         align-content: center;
-        width: 80% !important;
+        width: 50% !important;
     }
+
+    .form-field input {
+      border: 1px solid #CCC !important;
+      border-radius: 2px;
+      padding: 10px;
+      width: 250px;
+      font: 1em sans-serif;
+  }
+
+  fieldset p {
+    position: unset;
+  }
+
 }
 
 @keyframes actives {

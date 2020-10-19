@@ -5,7 +5,7 @@
 }
 
 body {
-    background: #E5E5E5;
+    background: gray;
 }
 
 header {
@@ -126,7 +126,7 @@ nav {
 .side-dropdown {
     display: none;
     position: fixed;
-    top:0;
+    top: 0;
     right: 0;
     padding: 10px;
     background: rgb(0, 0, 0, 0.7);
@@ -173,10 +173,11 @@ nav {
     display: flex;
     margin-top: 6em;
     flex-direction: column;
+    align-items: center;
+    align-content: center;
 }
 
 .create-order {
-    width: 20%;
     align-self: center;
     margin: 10px 0px 15px 0px;
     padding: 10px;
@@ -229,7 +230,13 @@ form {
     align-self: center;
 }
 
+.my-order {
+  display: grid;
+}
+
 table {
+    /* display: block; */
+    overflow: scroll;
     border-collapse: collapse;
     border-color: grey;
     text-align: center;
@@ -246,6 +253,7 @@ th {
 
 td {
     padding: 5px;
+    background-color: gainsboro;
 }
 
 .records {
@@ -260,7 +268,7 @@ td {
 .records div {
     padding: 2px;
     margin: 5px;
-    background-color: rgb(7, 255, 28);
+    background-color: rgb(96, 173, 103);
     color: black;
 }
 
@@ -269,27 +277,27 @@ button {
     border-radius: 5px;
     background-color: rgb(184, 157, 157);
     cursor: pointer;
-    border: 1px solid;
+    border: 3px solid inherit;
     padding: 5px;
 }
 
 .bg-modal {
-	background-color: rgba(0, 0, 0, 0.8);
-	width: 100%;
-	height: 100%;
-	position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    position: absolute;
     top: 0;
     left: 0;
-	display: none;
-	justify-content: center;
+    display: none;
+    justify-content: center;
     align-items: center;
 }
 
 .modal-contents {
-	background-color: white;
-	text-align: center;
-	padding: 35px;
-	position: relative;
+    background-color: white;
+    text-align: center;
+    padding: 35px;
+    position: relative;
     border-radius: 4px;
 }
 
@@ -300,17 +308,25 @@ button {
     font-size: 42px;
     color: #6b6767;
     -webkit-transform: rotate(45deg);
-            transform: rotate(45deg);
+    transform: rotate(45deg);
     cursor: pointer;
-  }
+}
 
 .close:hover {
     color: #000000;
-  }
+}
+
+.parcelFormat {
+    display: none;
+}
+
+.disable {
+    display: none;
+}
 
 @media(min-width:993px) {
     nav {
-        grid-template-columns:1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 
     .navbar {
@@ -324,55 +340,116 @@ button {
     }
 }
 
-@media screen and (max-width:400px) {
-    .container {
-        position: fixed;
-        background-color: forestgreen;
+@media screen and (max-width:480px) {
+    .parcel-delivery {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }
+    .create-order {
+        align-self: center;
+        width: unset;
+    }
+
+    .bg-modal {
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-contents {
+        background-color: darkslategray;
+        text-align: center;
+        padding: 30px;
+        position: relative;
+        border-radius: 4px;
+    }
+
+    .close {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 42px;
+        color: #6b6767;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        cursor: pointer;
+    }
+
+    input {
+        border: darkred solid 2px;
+    }
+
+    input:invalid {
+        background-color: #613535;
+    }
+
+    table#parcelTable {
+        display: none;
+    }
+
+    #pFormat {
+        background-color: rgb(163, 240, 140);
+        padding: 8px;
+        margin-bottom: 15px;
+        border-radius: 15px 0 15px 0;
+        width: 150px;
+        align-self: center;
+    }
+
+    .parcelFormat {
+        display: flex;
+        flex-direction: column;
+        margin: 15px;
+    }
+
+    select>option {
+        background-color: tomato;
+        margin-right: 20%;
+    }
+
+    .parcelTemp {
+        display: flex;
+        padding: 10px;
+        width: 250px;
+    }
+
+    .parcelTemp p {
+        padding: 3px;
     }
     
-    .parcel-delivery {
-        display: grid!important;
-        grid-template-columns: repeat(3, .5fr);
-        grid-template-rows: repeat(4, .25fr);
-        /* position: fixed; */
-        /* margin-left: 0px;
-        padding-left: 0px; */
-        background-color: fuchsia;
+    .temp {
+        padding: 5px;
+        color: darkred;
+        background-color: darkseagreen;
+        border-radius: 50px;
     }
 
-    .order-form {
-        grid-column: 2!important;
-        grid-row: 1;
-        /* margin-bottom: -5px; */
+    details p{
+        /* position: sticky; */
+        padding: 3px;
+        margin: 1px 0px 5px 10px;
+        background-color: #71a571;
+        font-weight: bold;
+        font-size: 12px;
+        width: 98%;
     }
 
-    .create-order {
-        margin-top: -120px;
-        margin-bottom: -120px;
-        /* width: unset; */
-        grid-column: 2;
-        grid-row: 2;
-    }
-
-    .my-order {
-        grid-row: 3!important;
-        grid-column: 2!important;
-        width: 80%;
-        /* align-self: center;
-        justify-self: center; */
-        /* align-items: center!important; */
-    }
-
-    table {
-        overflow-x: scroll;
-    }
-
-    .records {
+    .records p {
         margin-top: 10px;
-        grid-row: 4;
-        grid-column: 2;
+        background-color: unset;
+        margin-left: -15px !important;
+        
     }
-} 
+}
 
 @media screen and (max-width:780px) {
     nav {
@@ -415,6 +492,8 @@ button {
     .parcel-delivery {
         display: flex;
         flex-direction: column;
+        /* align-items: center;
+        justify-content: center; */
         margin-top: 75px;
     }
 
@@ -422,7 +501,7 @@ button {
         width: 90%;
         align-self: center;
         justify-self: center;
-        align-items: center!important;
+        align-items: center !important;
     }
 
     .form-field input {
@@ -437,13 +516,19 @@ button {
         width: 100%;
     }
 
-    .my-order {
-        grid-row: 2;
-        grid-column: 3;
+    /* .my-order {
+        display: grid!important;
+        padding: 5px;
+    } */
+
+    table {
+        /* overflow: auto; */
+        display: block;
+        overflow-y: hidden;
+        overflow-x: scroll!important;
     }
 
-    table tbody tr td{
-        overflow: auto;
+    table tbody tr td {
         overflow-wrap: break-word;
         -ms-flex-wrap: wrap;
         flex-wrap: wrap;

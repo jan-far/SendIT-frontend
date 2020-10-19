@@ -236,7 +236,7 @@ summary {
 
 table {
     border-collapse:  collapse;
-
+    /* display: grid; */
 }
 
 .buttons {

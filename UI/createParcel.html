@@ -6,6 +6,7 @@
     <meta name="description" content="Send your parcel to anywhere in the world">
     <link rel="stylesheet" href="../asset/css/createParcel.css">
     <link rel="stylesheet" href="../asset/css/intlTelInput.css">
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpKGYofvDxr0lOgGt0PdPFjCctR9wb_1s&callback=autocompletePlace&libraries=places"></script>
     <title>Create Parcel</title>
 </head>
 
@@ -57,7 +58,9 @@
                     <p>ORDERS AND DELIVERIES </p>
                 </div>
             </div>
-            <button class="create-order">Create Order</button>
+            <div class="createOrder">
+                <button class="create-order">Create Order</button>
+            </div>
             <div class="bg-modal">
                 <div class="order-form modal-contents">
                     <div class="close">+</div>
@@ -66,7 +69,7 @@
                             <input type="text" name="recipient" id="recipient" placeholder="Recipient Name" required>
                         </div>
                         <div class="form-field">
-                            <input type="text" name="destination" id="destination" placeholder="Destination" required>
+                            <input type="text" name="destination" class="place" id="destination" placeholder="Destination" required>
                         </div>
                         <div class="form-field">
                             <input type="number" name="weight" id="weight" placeholder="Weight in KG" required>
@@ -75,7 +78,7 @@
                             <input type="tel" name="phone" id="phone" required>
                         </div>
                         <div class="form-field">
-                            <input type="text" name="location" id="pickup" placeholder="Pickup location" required>
+                            <input type="text" name="location" id="pickup" class="place" placeholder="Pickup location" required>
                         </div>
                         <div class="form-field">
                             <input type="submit" name="submit" id="submit" value="Create Order" required>
@@ -103,6 +106,10 @@
                     </tbody>
                 </table>
                 <p class="parcelBody"></p>
+                <div class="parcelFormat">
+                    <select id="pFormat"></select>
+                    <div class="parcelTemp"></div>
+                </div>
             </div>
             <details class="records">
                 <summary>Order records</summary>
