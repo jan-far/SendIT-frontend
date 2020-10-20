@@ -1,6 +1,13 @@
 let selectedRow;
 const modal = document.querySelector('.bg-modal');
 const nav = document.querySelector('nav');
+const table = document.getElementById('parcelTable')
+const url = getHostUrl();
+const token = getCookie('session_');
+const parcels = {};
+let cell0;
+let formData;
+let search;
 
 function autocompletePlace() {
   const input = document.querySelector('.place')
@@ -29,6 +36,45 @@ function getCookie(cname) {
     }
   }
   return '';
+}
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  const expires = `expires=${d.toUTCString()}`;
+  document.cookie = `${cname}=${cvalue};${expires};path=/`;
+  return document.cookie;
+}
+
+function insertnewRow(data) {
+  const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0];
+  const newRow = table.insertRow(table.length);
+
+  cell0 = newRow.insertCell(0);
+
+  const cell1 = newRow.insertCell(1);
+  cell1.innerHTML = data.recipient;
+
+  const cell2 = newRow.insertCell(2);
+  cell2.innerHTML = data.weight;
+
+  const cell3 = newRow.insertCell(3);
+  cell3.innerHTML = data.destination;
+
+  const cell4 = newRow.insertCell(4);
+  cell4.innerHTML = data.location;
+
+  const cell5 = newRow.insertCell(5);
+  cell5.innerHTML = data.phone;
+
+  const cell6 = newRow.insertCell(6);
+  cell6.innerHTML = data.weight * 2;
+
+  const cell7 = newRow.insertCell(7);
+  cell7.innerHTML = '<button onclick="onFOrmSubmit(this)">Edit</button>';
+
+  const cell8 = newRow.insertCell(8);
+  cell8.innerHTML = '<button onclick="Delete(this)" >Cancel Order</button>';
 }
 
 async function getParcels() {
@@ -65,7 +111,7 @@ function resetForm() {
 function Edit(td) {
   modal.style.display = "flex";
   selectedRow = td.parentElement.parentElement;
-  sessionStorage.setItem('selected', selectedRow.cells[0].innerHTML);
+  sessionStorage.setItem('selected', selectedRow.rowIndex);
 
   document.querySelector('#recipient').setAttribute('disabled', true);
   document.querySelector('#weight').setAttribute('disabled', true);
@@ -79,61 +125,50 @@ function Edit(td) {
   document.querySelector('#phone').value = selectedRow.cells[5].innerHTML;
 
   document.querySelector('#submit').value = 'Update Destination';
+
+  // const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0]
+  // console.log(table.childElementCount, table)
+  // console.log(selectedRow.rowIndex)
+
+  // refresh();
 }
 
-function Delete(td) {
+async function Delete(td) {
+  // Get the parcels from the server
+  const req = await getParcels();
+  const data = req
+
+  // LOOP throught the data
+  for (let i = 0; i < data.rowCount; i++) {
+    parcels[i] = data.rows[i].id;
+  }
+
+  // Set new cokkies off the new parcel ID
+  setCookie('parcels', JSON.stringify(parcels), 1);
+
+  // Prompt user for comfirmation
   if (confirm('Are you sure to delete this record?')) {
     row = td.parentElement.parentElement;
-    document.getElementById('parcelTable').deleteRow(row.rowIndex);
-    refresh();
+
+    let tCount = table.rows.length;
+
+    // re-arrange the serial number
+    regroup(row.rowIndex, tCount, table)
+    
+    // Delete the parcel from the DB
     deleteParcel(td);
+
+    // Delete the parcel from the DOM
+    document.getElementById('parcelTable').deleteRow(row.rowIndex);
   }
-}
-
-const url = getHostUrl();
-const token = getCookie('session_');
-const parcels = {};
-let cell0;
-let formData;
-let search;
-
-function insertnewRow(data) {
-  const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0];
-  const newRow = table.insertRow(table.length);
-
-  cell0 = newRow.insertCell(0);
-
-  const cell1 = newRow.insertCell(1);
-  cell1.innerHTML = data.recipient;
-
-  const cell2 = newRow.insertCell(2);
-  cell2.innerHTML = data.weight;
-
-  const cell3 = newRow.insertCell(3);
-  cell3.innerHTML = data.destination;
-
-  const cell4 = newRow.insertCell(4);
-  cell4.innerHTML = data.location;
-
-  const cell5 = newRow.insertCell(5);
-  cell5.innerHTML = data.phone;
-
-  const cell6 = newRow.insertCell(6);
-  cell6.innerHTML = data.weight * 2;
-
-  const cell7 = newRow.insertCell(7);
-  cell7.innerHTML = '<button onclick="onFOrmSubmit(this)">Edit</button>';
-
-  const cell8 = newRow.insertCell(8);
-  cell8.innerHTML = '<button onclick="Delete(this)" >Cancel Order</button>';
 }
 
 async function deleteParcel(td) {
   const currentParcel = JSON.parse(getCookie('parcels'));
   row = td.parentElement.parentElement;
-  refresh()
-  const c = row.cells[0].innerHTML;
-  // console.log(c, currentParcel);
+
+  const c = row.rowIndex;
+  console.log(c, );
   try {
     const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/cancel`, {
       headers: {
@@ -153,20 +188,25 @@ async function deleteParcel(td) {
 }
 
 async function refresh() {
-  const result = await getParcels()
-  const data = result;
+  const table = document.getElementById('parcelTable')
+  // .getElementsByTagName('tbody')[0];
+  let tCount = table.rows.length;
+  let tIndex = parseInt(sessionStorage.getItem('selected'));
 
-  for (let i = 0; i < data.rowCount; i++) {
-    parcels[i] = data.rows[i].id;
-    cell0.innerHTML = i + 1;
-    // console.log(cell0.innerHTML);
-  }
-  // API.setCookie('parcels', JSON.stringify(parcels), 1);
+  regroup(tIndex, tCount, table)
+
 }
 
+// Re-arrange the serial number of the DOM
+function regroup(i, rc, ti) {
+  for (let j = (i + 1); j < rc; j++) {
+    ti.rows[j].cells[0].innerHTML = j - 1
+  }
+};
+
+// Handle the mobile layout DOM
 function mEdit(td) {
   modal.style.display = "initial";
-  nav.style.display = "none"
   selectedRow = td.parentElement;
 
   document.querySelector('#recipient').setAttribute('disabled', true);
@@ -194,9 +234,10 @@ function mDelete(td) {
 
 async function mdeleteParcel(td) {
   const currentParcel = JSON.parse(getCookie('parcels'));
-  row = sessionStorage.getItem('selected');
-  const c = row;
-  // refresh()
+  row = td.parentElement.parentElement;
+
+  const c = row.rowIndex;
+
   // console.log(c, currentParcel);
   try {
     const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/cancel`, {
@@ -210,6 +251,7 @@ async function mdeleteParcel(td) {
     const data = await result;
 
     console.log(data);
+    refresh()
 
   } catch (err) {
     console.log(err);
