@@ -28,7 +28,7 @@ async function autoRedirect() {
 
   if (!validLogin) {
     console.log('invalid');
-    window.location.href = ('../UI/redirect.html');
+    window.location.href = ('../pages/redirect.html');
   }
 }
 

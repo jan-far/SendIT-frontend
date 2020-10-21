@@ -55,7 +55,7 @@ form.addEventListener('submit', async (e) => {
       notification.innerHTML = `${res.message}`;
       API.setCookie('session_', `${res.Profile.token}`, 3);
       setTimeout(function () {
-        window.location.href = '../UI/dashboard.html';
+        window.location.href = '../pages/dashboard.html';
      }, 3000); 
       return;
     }

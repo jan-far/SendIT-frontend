@@ -58,7 +58,7 @@ form.addEventListener('submit', async (e) => {
       modelText.style.transition = '2s linear';
       API.setCookie('session_', `${res.Token}`, 3);
       setTimeout(function () {
-        window.location.href = '../UI/dashboard.html';
+        window.location.href = '../pages/dashboard.html';
      }, 3000); 
     }
   } catch (err) {
