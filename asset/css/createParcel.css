@@ -241,8 +241,8 @@ form {
 }
 
 table {
-  /* display: block; */
-  overflow: scroll;
+  display: block;
+  /* overflow: scroll; */
   border-collapse: collapse;
   border-color: grey;
   text-align: center;
@@ -343,13 +343,17 @@ button {
 
 @media(max-width:992px) {
   nav {
-    grid-template-columns: .1fr 1fr .2fr;
+    grid-template-columns: 1fr .2fr 1fr;
+  }
+  
+  .navbar {
+    grid-column: 3;
   }
 }
 
-@media screen and (max-width:480px) {
+/* @media screen and (max-width:480px) {
   .img-responsive {
-    width: 40
+    width: 60;
   }
 
   .parcel-delivery {
@@ -446,22 +450,29 @@ button {
   }
 
   details p {
-    /* position: sticky; */
     padding: 3px;
-    margin: 1px 0px 5px 10px;
     background-color: #71a571;
     font-weight: bold;
     font-size: 12px;
     width: 98%;
   }
 
+  .order-record {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .order-record>div {
+    width: 100%;
+  }
+
   .records p {
     margin-top: 10px;
     background-color: unset;
-    margin-left: -15px !important;
-
   }
-}
+
+} */
 
 @media screen and (max-width:780px) {
   nav {

@@ -90,8 +90,7 @@ fieldset>a {
 }
 
 fieldset>p {
-  position: relative;
-  left: 25%;
+  align-self: center;
   margin-bottom: 0;
 }
 

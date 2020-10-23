@@ -15,7 +15,7 @@ const parcelFormat = document.querySelector('#pFormat');
 const parcelTemp = document.querySelector('.parcelTemp');
 const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0]
 const parcels = {};
-const parcelHolder = {}
+let parcelHolder = {};
 let cell0;
 let formData;
 let search;
@@ -38,16 +38,15 @@ API.autoRedirect();
 //   preferredCountries: ['ng'],
 // });
 
-
-
 createOrder.addEventListener("click", () => {
   modal.style.display = "flex";
 });
 
 //  Event listener to close popup
 document.querySelector('.close').addEventListener("click", () => {
-  modal.style.display = "none";
-  nav.style.display = "grid"
+  // modal.style.display = "none";
+  // nav.style.display = "grid"
+  resetForm();
 });
 
 // Insert new table data
@@ -162,7 +161,10 @@ window.addEventListener('load', async () => {
       // Count the parcels that are yet to be delivered
       if (data.rows[i].status !== 'delivered') {
         count += 1;
+      } else {
+        count = 0;
       }
+
       records(data, count, (data.rowCount - count));
     }
     // console.log(parcelHolder)
@@ -209,8 +211,8 @@ function resetForm() {
   document.querySelector('#pickup').value = '';
   document.querySelector('#phone').value = '';
   document.querySelector('#submit').value = 'Create Oder';
-  selectedRow = null;
-  nav.style.display = "grid";
+  // selectedRow = null;
+  // nav.style.display = "grid";
   modal.style.display = "none";
 }
 
@@ -298,7 +300,7 @@ form.addEventListener('submit', async () => {
       modal.style.display = "none";
       resetForm();
 
-      if (!res || signup.status === 400 ) {
+      if (!res || signup.status === 400) {
         console.log(data.message);
       } else if (data.rows === [] || data.rowCount === 0) {
         console.log('an empty data');
@@ -306,9 +308,16 @@ form.addEventListener('submit', async () => {
         pTable.style.display = 'none'
       } else {
         insertnewRow(data.Parcel);
-        cell0.innerHTML = `${l + 1}`
-        // refresh()
-        // parcels[l + 1] = data.Parcel.id;
+        cell0.innerHTML = `${l + 1}`;
+
+        console.log(data)
+
+        // MObile
+        // Assign values to the option ta for mobile view
+        option += `<option value="${l + 1}">${l + 1}</option>`
+
+        parcelHolder[`${l + 1}`] = data.Parcel
+        refresh();
         return;
       }
     } catch (err) {
@@ -336,28 +345,37 @@ function records(total, pending, delivered) {
   `;
 }
 
-// Refresh function
+// Refresh function to make increament base on order status
 async function refresh() {
-  console.log(table)
+  let recount = 0;
   const result = await getParcels()
   const data = result;
-  // cell0.innerHTML = `${l + 1}`
-
 
   for (let i = 0; i < data.rowCount; i++) {
     parcels[i] = data.rows[i].id;
-    // cell0.innerHTML = i + 1;
-    // console.log(cell0.innerHTML);
-    if (data.rows[i].status !== 'delivered') {
-      // count += 1;
-      records(data, count + 1, (0));
+
+    if (width <= 480) {
+      // save data to the parcelHolder object 
+      parcelHolder[`${i + 1}`] = data.rows[i]
+      // console.log('new parcel', parcelHolder)
+
+      option += `<option value="${i + 1}">${i + 1}</option>`
+
     }
-    records(data, count, (data.rowCount - count))
+
+    if (data.rows[i].status !== 'delivered') {
+      recount += 1;
+      console.log('Not delivered')
+      records(data, (count + 1), 0);
+    } else {
+      recount += 1;
+      records(data, count, recount);
+    }
   }
   API.setCookie('parcels', JSON.stringify(parcels), 1);
 }
 
-// MObile view data format
+// Mobile view data format
 function pFormat(data) {
   return (` 
     <div >
@@ -371,6 +389,7 @@ function pFormat(data) {
       <p class='weight'>Weight: ${data.weight}</p>
       <p class='location'>Location: ${data.location}</p>
       <p class='destination'>Destination: ${data.destination}</p>
+      <p class='phone'>Phone: ${data.phone}</p>
       <p>Price: ${data.weight * 2}</p>
       <button class='mEdit' onclick="mEdit(this)" >Edit</button>
       <button onclick="mDelete(this)" >Cancel Order</button>
