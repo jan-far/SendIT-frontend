@@ -3,6 +3,8 @@ const modal = document.querySelector('.bg-modal');
 const nav = document.querySelector('nav');
 const table = document.getElementById('parcelTable');
 const record = document.querySelector('.order-record');
+const pBody = document.querySelector('.parcelBody');
+const pTable = document.querySelector('#parcelTable');
 const parcelFormat = document.querySelector('#pFormat');
 const url = getHostUrl();
 const token = getCookie('session_');
@@ -14,6 +16,7 @@ let formData;
 let search;
 let width;
 let tCount;
+let l;
 
 function autocompletePlace() {
   const input = document.querySelector('.place')
@@ -174,6 +177,7 @@ async function Delete(td) {
   // Get the parcels from the server
   const req = await getParcels();
   const data = req
+  // Get the total number of available table row
 
   // LOOP throught the data
   for (let i = 0; i < data.rowCount; i++) {
@@ -181,6 +185,11 @@ async function Delete(td) {
 
     // Assign values to the option ta for mobile view
     option += `<option value="${i + 1}">${i + 1}</option>`
+
+    // if (pBody.innerHTML === 'NO PARCEL ORDER HAS BEEN MADE! ' || pBody.textContent === 'NO PARCEL ORDER HAS BEEN MADE! ') {
+    //   pTable.style.display = 'block'
+    //   pBody.innerHTML = 'none';
+    // }
   }
   
   parcelFormat.innerHTML = option;
@@ -193,10 +202,17 @@ async function Delete(td) {
     row = td.parentElement.parentElement;
 
     tCount = table.rows.length;
-    console.log(tCount)
 
     // Refresh order data
     refresh(td)
+    l = tCount - 1;
+    console.log(l, tCount)
+
+    if (l <= 1 ) {
+      pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
+      pBody.style.display = 'flex';
+      pTable.style.display = 'none';
+    }
 
     // re-arrange the serial number
     regroup(row.rowIndex, tCount, table)
@@ -244,14 +260,14 @@ async function refresh(td) {
   const data = result;
 
   if (data.status !== 'delivered') {
-    if (width <= 480) {
-      return console.log('Screen 480: Not delivered')
-    }
+    // if (width <= 480) {
+    //   return console.log('Screen 480: Not delivered')
+    // }
     return records(total - 1, pending - 1, 0);
   } else {
-    if (width <= 480) {
-      return console.log('Screen 480: delivered')
-    }
+    // if (width <= 480) {
+    //   return console.log('Screen 480: delivered')
+    // }
     records((total - 1), pending, delivered - 1);
   }
 

@@ -109,7 +109,7 @@ async function getParcels() {
     //     if (data.rows[i].status !== 'delivered') {
     //       count += 1;
     //     }
-    //     records(data, count, (data.rowCount - count));
+    //     records(data.rowCount, count, (data.rowCount - count));
     //   }
     //   API.setCookie('parcels', JSON.stringify(parcels), 1);
     // }
@@ -134,6 +134,7 @@ window.addEventListener('load', async () => {
     pTable.classList.add('disable')
     pMobile.classList.add('disable')
     pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
+    records(0, 0, 0);
   } else {
     // Enable table and mobiles
     pTable.classList.remove('disable')
@@ -165,7 +166,7 @@ window.addEventListener('load', async () => {
         count = 0;
       }
 
-      records(data, count, (data.rowCount - count));
+      records(data.rowCount, count, (data.rowCount - count));
     }
     // console.log(parcelHolder)
 
@@ -302,15 +303,24 @@ form.addEventListener('submit', async () => {
 
       if (!res || signup.status === 400) {
         console.log(data.message);
-      } else if (data.rows === [] || data.rowCount === 0) {
-        console.log('an empty data');
-        pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
-        pTable.style.display = 'none'
+      } else if (pBody.innerHTML === 'NO PARCEL ORDER HAS BEEN MADE! ' || pBody.textContent === 'NO PARCEL ORDER HAS BEEN MADE! ') {
+        // Insert the data created to start
+        insertnewRow(data.Parcel);
+
+        // Start with the initial index
+        cell0.innerHTML = `${l + 1}`;
+
+        // display the table and hide the 
+        pTable.style.display = 'block'
+        pBody.style.display = 'none';
+
+        // Record the data
+        records(1, 1, 0);
       } else {
         insertnewRow(data.Parcel);
         cell0.innerHTML = `${l + 1}`;
 
-        console.log(data)
+        // console.log(data)
 
         // MObile
         // Assign values to the option ta for mobile view
@@ -318,7 +328,6 @@ form.addEventListener('submit', async () => {
 
         parcelHolder[`${l + 1}`] = data.Parcel
         refresh();
-        return;
       }
     } catch (err) {
       console.log(err);
@@ -340,7 +349,7 @@ function records(total, pending, delivered) {
       Order Delivered: ${delivered}
   </div>
   <div class="total">
-      My total Order: ${total.rowCount}
+      My total Order: ${total}
   </div>
   `;
 }
@@ -354,22 +363,21 @@ async function refresh() {
   for (let i = 0; i < data.rowCount; i++) {
     parcels[i] = data.rows[i].id;
 
-    if (width <= 480) {
-      // save data to the parcelHolder object 
-      parcelHolder[`${i + 1}`] = data.rows[i]
-      // console.log('new parcel', parcelHolder)
+    // For mobile
+    // if (width <= 480) {
+    //   // save data to the parcelHolder object 
+    //   parcelHolder[`${i + 1}`] = data.rows[i]
+    //   // console.log('new parcel', parcelHolder)
 
-      option += `<option value="${i + 1}">${i + 1}</option>`
+    //   option += `<option value="${i + 1}">${i + 1}</option>`
 
-    }
+    // }
 
     if (data.rows[i].status !== 'delivered') {
-      recount += 1;
-      console.log('Not delivered')
-      records(data, (count + 1), 0);
+      records(data.rowCount, (count + 1), 0);
     } else {
       recount += 1;
-      records(data, count, recount);
+      records(data.rowCount, count, recount);
     }
   }
   API.setCookie('parcels', JSON.stringify(parcels), 1);
