@@ -56,7 +56,7 @@ function setCookie(cname, cvalue, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   const expires = `expires=${d.toUTCString()}`;
-  document.cookie = `${cname}=${cvalue};${expires};path=/`;
+  document.cookie = `${cname}=${cvalue};${expires};path=/; Secure`;
   return document.cookie;
 }
 
@@ -206,7 +206,6 @@ async function Delete(td) {
     // Refresh order data
     refresh(td)
     l = tCount - 1;
-    console.log(l, tCount)
 
     if (l <= 1 ) {
       pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';

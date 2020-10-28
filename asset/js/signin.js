@@ -48,16 +48,28 @@ form.addEventListener('submit', async (e) => {
       notiPanel.style.display = 'flex';
       notification.innerHTML = `${res.message}`;
     } else {
-      // console.log(data);
-      notiPanel.classList.add('successful');
-      notiPanel.classList.remove('failed');
-      notiPanel.style.display = 'flex';
-      notification.innerHTML = `${res.message}`;
-      API.setCookie('session_', `${res.Profile.token}`, 3);
-      setTimeout(function () {
-        window.location.href = '../pages/dashboard.html';
-     }, 3000); 
-      return;
+      console.log(data.Profile.role);
+      if (res.Profile.role === 1) {
+        notiPanel.classList.add('successful');
+        notiPanel.classList.remove('failed');
+        notiPanel.style.display = 'flex';
+        notification.innerHTML = `${res.message}`;
+        API.setCookie('session_', `${res.Profile.token}`, 3);
+        setTimeout(function () {
+          window.location.href = '../pages/dashboard.html';
+        }, 3000);
+        return;
+      } else {
+        notiPanel.classList.add('successful');
+        notiPanel.classList.remove('failed');
+        notiPanel.style.display = 'flex';
+        notification.innerHTML = `Welcome Back Admin!`;
+        API.setCookie('session_', `${res.Profile.token}`, 3);
+        setTimeout(function () {
+          window.location.href = '../admin/admin.html';
+        }, 3000);
+        return;
+      }
     }
   } catch (err) {
     console.log(err);
