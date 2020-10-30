@@ -49,6 +49,14 @@ function getCookie(cname) {
   return '';
 };
 
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  const expires = `expires=${d.toUTCString()}`;
+  document.cookie = `${cname}=${cvalue};${expires};path=/; Secure`;
+  return document.cookie;
+};
+
 // Insert new table data
 function insertnewRow(data) {
   // Get th table body
@@ -131,8 +139,10 @@ window.addEventListener('load', async () => {
     usr = await getUser(id)
     myOrder.innerHTML = Table(usr.rows[0])
     for (let i = 0; i < rowCount; i++) {
-        insertnewRow(rows[i])
-        cell0.innerHTML = i + 1;
+      // Save up parcel id
+      parcels[i] = rows[i].id;
+      insertnewRow(rows[i])
+      cell0.innerHTML = i + 1;
 
       // Count the parcels that are yet to be delivered
       if (rows[i].status !== 'delivered') {
@@ -144,7 +154,13 @@ window.addEventListener('load', async () => {
 
     records(rowCount, count, (rowCount - count));
   }
+  setCookie('parcels', JSON.stringify(parcels), 1);
 });
+
+// Reset
+function reset() {
+  modal.style.display = "none";
+}
 
 // Form handler
 form.addEventListener('submit', async () => {
@@ -211,8 +227,8 @@ form.addEventListener('submit', async () => {
       return err;
     }
   } else {
-    updateParcel();
-    // resetForm();
+    Updates();
+    reset();
   }
 });
 
@@ -235,8 +251,54 @@ function Edit(td) {
   document.querySelector('#submit').value = 'Update Destination';
 };
 
+// update users status and 
+async function UpdateStatus(data) {
+  const currentParcel = JSON.parse(getCookie('parcels'));
+  row = sessionStorage.getItem('selected');
+  const c = row;
+
+  try {
+    const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/status`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-access-token': `${token}`,
+      },
+      method: 'PUT',
+      body: data,
+    });
+    const result = await res.json();
+    return result;
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// Update current parcel location
+async function UpdateLocation(data) {
+  const currentParcel = JSON.parse(getCookie('parcels'));
+  row = sessionStorage.getItem('selected');
+  const c = row;
+
+  try {
+    const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/presentLocation`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-access-token': `${token}`,
+      },
+      method: 'PUT',
+      body: data,
+    });
+    const result = await res.json();
+    return result;
+  
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 //  Update the form data
-async function updateParcel() {
+async function Updates() {
   const currentParcel = JSON.parse(getCookie('parcels'));
   row = sessionStorage.getItem('selected');
 
@@ -248,35 +310,19 @@ async function updateParcel() {
   for (const pair of formData) {
     if (pair[0] === 'location') {
       selectedRow.cells[4].innerHTML = pair[1]
+      search.append(pair[0], pair[1].trim());
+
+      const result = await UpdateLocation(search);
+      console.log(result.message)
     };
 
     if (pair[0] === 'status') {
       selectedRow.cells[5].innerHTML = pair[1]
+      search.append(pair[0], pair[1].trim());
+
+      const result = await UpdateStatus(search);
+      console.log(result.message)
     }
-
-    search.append(pair[0], pair[1].trim());
-    console.log(pair[0], pair[1]);
-  }
-
-  console.log(currentParcel)
-  try {
-    const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/destination`, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'x-access-token': `${token}`,
-      },
-      method: 'PUT',
-      body: search,
-    });
-    const result = await res.json();
-
-    if (result) {
-      // console.log(result)
-      console.log('Updated');
-      // resetForm()
-    }
-  } catch (err) {
-    console.log(err);
   }
 };
 

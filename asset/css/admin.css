@@ -234,7 +234,7 @@ form {
 }
 
 caption {
-  background-color: crimson;
+  background-color: crimson!important;
   display: flex;
   flex-direction: column;
   place-content: center center;
@@ -286,6 +286,13 @@ button {
   cursor: pointer;
   border: 3px solid inherit;
   padding: 5px;
+}
+
+button:hover  {
+  cursor: pointer;
+  transform: scale(1.05);
+  background-color: rgb(150, 116, 32);
+  color: whitesmoke
 }
 
 .bg-modal {
