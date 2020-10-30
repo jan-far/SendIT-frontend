@@ -16,9 +16,14 @@ const parcelTemp = document.querySelector('.parcelTemp');
 const parcels = {};
 const user = [];
 let cell0;
-let tbl, tbl1, tbl2;
+let count = 0;
 let usr;
 let id;
+
+//  Event listener to close popup
+document.querySelector('.close').addEventListener("click", () => {
+  modal.style.display = "none";
+});
 
 function getHostUrl() {
   if (window.location.host.indexOf('localhost') === 0 ||
@@ -42,45 +47,23 @@ function getCookie(cname) {
     }
   }
   return '';
-}
+};
 
 // Insert new table data
-function insertnewRow(x, y, data, d) {
-  // Gte the Node list of all Table element
-  tbl = document.querySelectorAll('table')
-
-  // If a table tilte is not Empty
-  if (tbl[x].title !== "") {
-    // Assign param Y
-    if (y == `${undefined}#${undefined}`) {
-      console.log('won de')
-      return;
-    }
-    tbl = y;
-  } else {
-    // set the TITLE attribute from the param D, which is the user detail
-    tbl[x].setAttribute('title', `${d.Profile.firstname} ${d.Profile.lastname}`);
-    tbl = tbl[x].localName + '#' + tbl[x].id;
-  }
-
+function insertnewRow(data) {
   // Get th table body
-  const table = document.querySelector(`${tbl}`).getElementsByTagName('tbody')[0];
-  
+  const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0];
+
   // Insert new table row
   const newRow = table.insertRow(table.length);
 
   cell0 = newRow.insertCell(0);
 
-  let z = document.querySelectorAll('table');
-  console.log(z[x].rowsIndex )
-  cell0.innerHTML = z[x].id;
-    cell0.setAttribute('rowspan', `${x}`)
-
   const cell1 = newRow.insertCell(1);
   cell1.innerHTML = data.recipient;
 
   const cell2 = newRow.insertCell(2);
-  cell2.innerHTML = data.weight;
+  cell2.innerHTML = data.phone;
 
   const cell3 = newRow.insertCell(3);
   cell3.innerHTML = data.destination;
@@ -89,42 +72,30 @@ function insertnewRow(x, y, data, d) {
   cell4.innerHTML = data.location;
 
   const cell5 = newRow.insertCell(5);
-  cell5.innerHTML = data.phone;
+  cell5.innerHTML = data.status;
 
   const cell6 = newRow.insertCell(6);
-  cell6.innerHTML = data.status;
+  cell6.innerHTML = '<button class="edit" onclick="Edit(this)">Edit</button>';
+};
 
-  const cell7 = newRow.insertCell(7);
-  cell7.innerHTML = '<button class="edit" onclick="Edit(this)">Edit</button>';
-
-  tbl = document.querySelectorAll('table')
-}
-
-// Get all users data
-async function getParcels() {
+// Get the user parcel
+async function getParcel(_id) {
   try {
-    const res = await fetch(`${url}/admin/parcels`, {
+    const res = await fetch(`${url}/admin/parcel/${_id}`, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'x-access-token': `${token}`,
       },
       method: 'GET',
     });
-    const result = await res.json();
-    const data = result;
-
-    for (let w = 0; w < data.rowCount; w++) {
-      id = data.rows[w].owner_id;
-      user[w] = id;
-    }
-
-    return { res, result };
+    const { rows, rowCount } = await res.json();
+    return { rows, rowCount, res };
   } catch (err) {
     console.log(err);
   }
 };
 
-// Get User
+// Get a user
 async function getUser(_id) {
   try {
     const res = await fetch(`${url}/admin/user/${_id}`, {
@@ -139,86 +110,41 @@ async function getUser(_id) {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
+// on window load
 window.addEventListener('load', async () => {
-  const { res, result } = await getParcels();
-  const rqst = res;
-  const data = result;
+  const id = getCookie('id')
+  const { rows, rowCount, res } = await getParcel(id);
 
-  if (rqst.statusCode === 400 || !token) {
+  if (res.statusCode === 400 || !token) {
     window.location.href = ('../admin');
   }
 
-  if (!rqst) {
+  if (!res) {
     console.log('error occured');
-  } else if (data.rows === [] || data.rowCount === 0) {
+  } else if (rows === [] || rowCount === 0) {
     console.log('an empty data');
-
-    // disable table and mobiles
-    pTable.classList.add('disable')
-    pMobile.classList.add('disable')
-    pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
+    records(0, 0, 0);
+    myOrder.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
   } else {
-    // console.log(Object.keys(user).length)
+    usr = await getUser(id)
+    myOrder.innerHTML = Table(usr.rows[0])
+    for (let i = 0; i < rowCount; i++) {
+        insertnewRow(rows[i])
+        cell0.innerHTML = i + 1;
 
-    for (let i = 0; i < Object.keys(user).length; i++) {
-      if (user[i] === data.rows[i].owner_id) {
-        usr = await getUser(user[i]);
-
-        console.log(tbl)
-
-        // if (usr.Profile.id) {
-        if (tbl == undefined) {
-          myOrder.innerHTML += Table(usr)
-        } else if (tbl[i - 1] == undefined) {
-          // tbl1 = document.querySelectorAll('table');
-          tbl.forEach((userT, index) => {
-            // console.log(userT.id, `a${user[index].toString().split('-')[4]}`, index)
-            if (userT.id == `a${user[index].toString().split('-')[4]}`) {
-              // console.log(tbl2, index)
-              tbl2 = tbl2[index].localName + '#' + tbl2[index].id;
-              insertnewRow(index, tbl2, data.rows[i], usr);
-            }
-            return;
-          })
-          return;
-        } else if (tbl[i - 1].id !== `a${user[i].toString().split('-')[4]}`) {
-          // console.log(tbl[i - 1].id);
-          myOrder.innerHTML += Table(usr)
-        } else if (tbl[i - 1].id == `a${user[i].toString().split('-')[4]}`) {
-          // console.log('already exist')
-          // console.log(i)
-          insertnewRow(i - 1, tbl2, data.rows[i], usr);
-        }
-
-        tbl2 = document.querySelectorAll('table');
-        const fullName = `${usr.Profile.firstname} ${usr.Profile.lastname}`;
-
-        // console.log(tbl2[i])
-        if (tbl2[i] == undefined) {
-          continue;
-        } else if (tbl2[i].title !== '') {
-          tbl2 = tbl2[i].localName + '#' + tbl2[i].id;
-          insertnewRow(i, tbl2, data.rows[i], usr);
-        }
-        tbl2[i].setAttribute('id', `a${user[i].toString().split('-')[4]}`);
-        // console.log(tbl2[i].id);
-        tbl2 = tbl2[i].localName + '#' + tbl2[i].id;
-        insertnewRow(i, tbl2, data.rows[i], usr);
-        // }
+      // Count the parcels that are yet to be delivered
+      if (rows[i].status !== 'delivered') {
+        count += 1;
+      } else {
+        count = 0;
       }
     }
 
-    // for (let i = 0; i < data.rowCount; i++) {
-    //   // cell0.innerHTML = i
-    //   tbl = document.querySelectorAll('table')
-    //   console.log(tbl[i].getElementsByTagName('tbody')[0])
-    // }
-
+    records(rowCount, count, (rowCount - count));
   }
-
-})
+});
 
 // Form handler
 form.addEventListener('submit', async () => {
@@ -286,41 +212,53 @@ form.addEventListener('submit', async () => {
     }
   } else {
     updateParcel();
-    resetForm();
+    // resetForm();
   }
 });
 
+// Edit the specified form data
+function Edit(td) {
+  modal.style.display = "flex";
+  selectedRow = td.parentElement.parentElement;
+  sessionStorage.setItem('selected', selectedRow.rowIndex);
+
+  document.querySelector('#recipient').setAttribute('disabled', true);
+  document.querySelector('#destination').setAttribute('disabled', true);
+  document.querySelector('#phone').setAttribute('disabled', true);
+
+  document.querySelector('#recipient').value = selectedRow.cells[1].innerHTML;
+  document.querySelector('#phone').value = selectedRow.cells[2].innerHTML;
+  document.getElementById('destination').value = selectedRow.cells[3].innerHTML;
+  document.querySelector('#pickup').value = selectedRow.cells[4].innerHTML;
+  document.querySelector('#status').value = selectedRow.cells[5].innerHTML;
+
+  document.querySelector('#submit').value = 'Update Destination';
+};
+
 //  Update the form data
 async function updateParcel() {
-  const currentParcel = JSON.parse(API.getCookie('parcels'));
+  const currentParcel = JSON.parse(getCookie('parcels'));
   row = sessionStorage.getItem('selected');
 
   const c = row;
-  // console.log(selectedRow, row);
 
   formData = new FormData(form);
   search = new URLSearchParams();
 
   for (const pair of formData) {
-    if (width <= 480) {
-      if (selectedRow.childNodes[11].className) {
-        // selectedRow.childNodes[5].textContent.split(':')[1] = pair[1]
-        // console.log(selectedRow.childNodes[7])
-        selectedRow.childNodes[7].innerHTML = `Destination: ${pair[1].toString().trim()}`
-        // parcelHolder[row].destination = pair[1]
-      }
-    }
-    else if (selectedRow.cells[7].childNodes[0].className) {
-      selectedRow.cells[3].innerHTML = pair[1]
-      // parcelHolder[row].destination = pair[1]
-      // console.log(parcelHolder[row].destination)
+    if (pair[0] === 'location') {
+      selectedRow.cells[4].innerHTML = pair[1]
     };
-    // }
+
+    if (pair[0] === 'status') {
+      selectedRow.cells[5].innerHTML = pair[1]
+    }
 
     search.append(pair[0], pair[1].trim());
     console.log(pair[0], pair[1]);
   }
 
+  console.log(currentParcel)
   try {
     const res = await fetch(`${url}parcels/${currentParcel[c - 1]}/destination`, {
       headers: {
@@ -335,27 +273,26 @@ async function updateParcel() {
     if (result) {
       // console.log(result)
       console.log('Updated');
-      resetForm()
+      // resetForm()
     }
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 // Table
 function Table(data) {
   return (`
-<div class="my-order">
-<table border="1">
-    <caption>USER: ${data.Profile.firstname} ${data.Profile.lastname}</caption>
+<div class='my-order'>
+<caption>USER: ${data.firstname} ${data.lastname}</caption>
+<table border="1" id=parcelTable>
     <thead>
     <tr>
             <th>S/N</th>
             <th>Recipient</th>
-            <th>weight</th>
+            <th>Recipient Phone number</th>
             <th>City of Destination</th>
             <th>Pickup location</th>
-            <th>Recipient Phone number</th>
             <th>Status</th>
             <th></th>
         </tr>
@@ -371,4 +308,26 @@ function Table(data) {
 </div>
 </div>
 `);
-}
+};
+
+// Re-arrange the serial number of the DOM
+function regroup(i, rc, ti) {
+  for (let j = (i + 1); j < rc; j++) {
+    ti.rows[j].cells[0].innerHTML = j - 1
+  }
+};
+
+// database records function handler
+function records(total, pending, delivered) {
+  record.innerHTML = `
+  <div class="pending">
+      Pending Order: ${pending}
+  </div>
+  <div class="delivered">
+      Order Delivered: ${delivered}
+  </div>
+  <div class="total">
+      My total Order: ${total}
+  </div>
+  `;
+};
