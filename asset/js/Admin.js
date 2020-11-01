@@ -7,12 +7,10 @@ const record = document.querySelector('.order-record');
 const modal = document.querySelector('.bg-modal');
 const pTable = document.querySelector('#parcelTable')
 const pBody = document.querySelector('.parcelBody');
-const createOrder = document.querySelector('.create-order');
 const sel = document.querySelector('#pFormat');
 const pMobile = document.querySelector('.parcelFormat');
 const parcelFormat = document.querySelector('#pFormat');
 const parcelTemp = document.querySelector('.parcelTemp');
-// const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0]
 const parcels = {};
 const user = [];
 let cell0;
@@ -89,7 +87,7 @@ function insertnewRow(data) {
 // Get the user parcel
 async function getParcel(_id) {
   try {
-    const res = await fetch(`${url}/admin/parcel/${_id}`, {
+    const res = await fetch(`${url}/admin/parcels/${_id}`, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'x-access-token': `${token}`,
@@ -122,13 +120,18 @@ async function getUser(_id) {
 
 // on window load
 window.addEventListener('load', async () => {
+  //  get user Id 
   const id = getCookie('id')
+
+  // Query parcels owned by user Id
   const { rows, rowCount, res } = await getParcel(id);
 
+  // if error or no token, redirect to login page
   if (res.statusCode === 400 || !token) {
     window.location.href = ('../admin');
   }
 
+  // if not Res 
   if (!res) {
     console.log('error occured');
   } else if (rows === [] || rowCount === 0) {
@@ -137,6 +140,10 @@ window.addEventListener('load', async () => {
     myOrder.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
   } else {
     usr = await getUser(id)
+    if (usr.statusCode > 300) {
+      window.location.href = "../index.html"
+    }
+
     myOrder.innerHTML = Table(usr.rows[0])
     for (let i = 0; i < rowCount; i++) {
       // Save up parcel id
@@ -145,12 +152,13 @@ window.addEventListener('load', async () => {
       cell0.innerHTML = i + 1;
 
       // Count the parcels that are yet to be delivered
-      if (rows[i].status !== 'delivered') {
+      if (rows[i].status != 'delivered') {
         count += 1;
       } else {
-        count = 0;
+        count;
       }
     }
+    // console.log(myOrder.childNodes[1].childNodes[1].childNodes[2])
 
     records(rowCount, count, (rowCount - count));
   }
@@ -162,74 +170,30 @@ function reset() {
   modal.style.display = "none";
 }
 
-// Form handler
-form.addEventListener('submit', async () => {
-  if (submit.value !== 'Update Destination') {
-    // l = Object.keys(JSON.parse(API.getCookie('parcels'))).length
-
-    // Get the total number of available table row
-    l = table.childElementCount;
-
-    // Get user body params from form
-    formData = new FormData(form);
-    search = new URLSearchParams();
-
-    // loop through the data and append to searchParams
-    for (const pair of formData) {
-      search.append(pair[0], pair[1]);
-      // console.log(pair[0], pair[1]);
-    }
-
-    try {
-      const signup = await fetch(`${url}parcels`, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'x-access-token': `${token}`,
-        },
-        method: 'POST',
-        body: search,
-      });
-      const res = await signup.json();
-      const data = await res;
-      modal.style.display = "none";
-      resetForm();
-
-      if (!res || signup.status === 400) {
-        console.log(data.message);
-      } else if (pBody.innerHTML === 'NO PARCEL ORDER HAS BEEN MADE! ' || pBody.textContent === 'NO PARCEL ORDER HAS BEEN MADE! ') {
-        // Insert the data created to start
-        insertnewRow(data.Parcel);
-
-        // Start with the initial index
-        cell0.innerHTML = `${l + 1}`;
-
-        // display the table and hide the 
-        pTable.style.display = 'block'
-        pBody.style.display = 'none';
-
-        // Record the data
-        records(1, 1, 0);
-      } else {
-        insertnewRow(data.Parcel);
-        cell0.innerHTML = `${l + 1}`;
-
-        // console.log(data)
-
-        // MObile
-        // Assign values to the option ta for mobile view
-        option += `<option value="${l + 1}">${l + 1}</option>`
-
-        parcelHolder[`${l + 1}`] = data.Parcel
-        refresh();
-      }
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
+const sub = document.querySelector('#status')
+sub.addEventListener('change', (e) => {
+  if (selectedRow.cells[5].textContent === e.target.value.toLowerCase().trim()) {
+   ;
+    return;
   } else {
-    Updates();
-    reset();
+    if (e.target.value.toLowerCase().trim() === 'delivered') {
+      refresh(e.target.value.toLowerCase().trim())
+      // console.log('delivered')
+    } else if (e.target.value.toLowerCase().trim() === 'processing') {
+      refresh(e.target.value.toLowerCase().trim())
+      // console.log('processing')
+    } else {
+      // console.log(e.target.value)
+      return;
+    }
   }
+})
+
+// Form handler
+form.addEventListener('submit', async (e) => {
+  Updates();
+  reset();
+  refresh();
 });
 
 // Edit the specified form data
@@ -272,7 +236,7 @@ async function UpdateStatus(data) {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 // Update current parcel location
 async function UpdateLocation(data) {
@@ -291,34 +255,29 @@ async function UpdateLocation(data) {
     });
     const result = await res.json();
     return result;
-  
+
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 //  Update the form data
 async function Updates() {
-  const currentParcel = JSON.parse(getCookie('parcels'));
-  row = sessionStorage.getItem('selected');
-
-  const c = row;
-
   formData = new FormData(form);
   search = new URLSearchParams();
 
   for (const pair of formData) {
     if (pair[0] === 'location') {
-      selectedRow.cells[4].innerHTML = pair[1]
-      search.append(pair[0], pair[1].trim());
+      selectedRow.cells[4].innerHTML = pair[1].toLowerCase().trim();
+      search.append(pair[0], pair[1].toLowerCase().trim());
 
       const result = await UpdateLocation(search);
       console.log(result.message)
     };
 
     if (pair[0] === 'status') {
-      selectedRow.cells[5].innerHTML = pair[1]
-      search.append(pair[0], pair[1].trim());
+      selectedRow.cells[5].innerHTML = pair[1].toLowerCase().trim();
+      search.append(pair[0], pair[1].toLowerCase().trim());
 
       const result = await UpdateStatus(search);
       console.log(result.message)
@@ -356,13 +315,6 @@ function Table(data) {
 `);
 };
 
-// Re-arrange the serial number of the DOM
-function regroup(i, rc, ti) {
-  for (let j = (i + 1); j < rc; j++) {
-    ti.rows[j].cells[0].innerHTML = j - 1
-  }
-};
-
 // database records function handler
 function records(total, pending, delivered) {
   record.innerHTML = `
@@ -377,3 +329,18 @@ function records(total, pending, delivered) {
   </div>
   `;
 };
+
+// Refresh function to make decreament base on order status
+async function refresh(val) {
+  const pending = parseInt(record.childNodes[1].textContent.split(':')[1].trim());
+  const delivered = parseInt(record.childNodes[3].textContent.split(':')[1].trim());
+  const total = parseInt(record.childNodes[5].textContent.split(':')[1].trim());
+
+  if (val == 'delivered') {
+    // console.log('delivered')
+    return records(total, pending - 1, delivered + 1);
+  } else if (val == 'processing') {
+    // console.log('processing')
+    return records(total, pending + 1, delivered - 1 )
+  }
+}

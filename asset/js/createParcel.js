@@ -244,7 +244,7 @@ async function updateParcel() {
     };
     // }
 
-    search.append(pair[0], pair[1].trim());
+    search.append(pair[0], pair[1].toLowerCase().trim());
     console.log(pair[0], pair[1]);
   }
 
