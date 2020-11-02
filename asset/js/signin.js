@@ -63,10 +63,10 @@ form.addEventListener('submit', async (e) => {
         notiPanel.classList.add('successful');
         notiPanel.classList.remove('failed');
         notiPanel.style.display = 'flex';
-        notification.innerHTML = `Welcome Back Admin!`;
+        notification.innerHTML = `Admin? You'll be redirected shortly!`;
         API.setCookie('session_', `${res.Profile.token}`, 3);
         setTimeout(function () {
-          window.location.href = '../admin/dashboard.html';
+          window.location.href = '../admin';
         }, 3000);
         return;
       }
