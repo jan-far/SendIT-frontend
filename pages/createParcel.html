@@ -1,130 +1,136 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Send your parcel to anywhere in the world">
-    <link rel="shortcut icon" href="../favicon.ico" sizes="16x16 32x32" type="image/x-icon">
-    <link rel="stylesheet" href="../asset/css/createParcel.css">
-    <link rel="stylesheet" href="../asset/css/intlTelInput.css">
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpKGYofvDxr0lOgGt0PdPFjCctR9wb_1s&callback=autocompletePlace&libraries=places"></script>
-    <title>Create Parcel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Send your parcel to anywhere in the world">
+  <link rel="shortcut icon" href="../favicon.ico" sizes="16x16 32x32" type="image/x-icon">
+  <link rel="stylesheet" href="../asset/css/createParcel.css">
+  <link rel="stylesheet" href="../asset/css/intlTelInput.css">
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpKGYofvDxr0lOgGt0PdPFjCctR9wb_1s&callback=autocompletePlace&libraries=places"></script>
+  <title>Create Parcel</title>
 </head>
 
 <body>
 
-    <header>
-        <nav>
-            <a class="navbar-brand" href="index.html">
-                <img class="img-responsive" src="../asset/img/logo.jpg" width="80px" alt="SendIT logo">
-            </a>
-            <div class="navbar">
-                <a href="./home.html">Home</a>
-                <a href="getQuotes.html">Get Quotation</a>
-                <div class="dropdown">
-                    <button class="dropbtn">My Account
-                        <!-- <i class="fa fa-caret-down"></i> -->
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="#">Profile</a>
-                        <a href="./dashboard.html">Dashboard</a>
-                        <a class="btn logout" href="../index.html">Logout</a>
-                    </div>
-                </div>
-            </div>
-            <div class="bar-container" onclick="toggler(this)">
-                <div class="bar1"></div>
-                <div class="bar2"></div>
-                <div class="bar3"></div>
-            </div>
-
-            <!-- side navigation -->
-            <div class="side-dropdown">
-                <a href="./home.html">Home</a>
-                <button class="dropbtn" onclick="myFunction()"> My account</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a class="nav-link" href="#">Get Quotes</a>
-                    <a href="nav-link" href="#">Profile</a>
-                    <a class="nav-link" href="./dashboard.html">Dashboard</a>
-                    <a class="nav-link logout" href="../index.html">Logout</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <div class="container">
-        <div class="parcel-delivery">
-            <div class="order-form">
-                <div class="form-title modal-content">
-                    <p>ORDERS AND DELIVERIES </p>
-                </div>
-            </div>
-            <div class="createOrder">
-                <button class="create-order">Create Order</button>
-            </div>
-            <div class="bg-modal">
-                <div class="order-form modal-contents">
-                    <div class="close">+</div>
-                    <form action="#" onsubmit="event.preventDefault();">
-                        <div class="form-field">
-                            <input type="text" name="recipient" id="recipient" placeholder="Recipient Name" required>
-                        </div>
-                        <div class="form-field">
-                            <input type="text" name="destination" class="place" id="destination" placeholder="Destination" required>
-                        </div>
-                        <div class="form-field">
-                            <input type="number" name="weight" id="weight" placeholder="Weight in KG" required>
-                        </div>
-                        <div class="form-field">
-                            <input type="tel" name="phone" id="phone" required>
-                        </div>
-                        <div class="form-field">
-                            <input type="text" name="location" id="pickup" class="place" placeholder="Pickup location" required>
-                        </div>
-                        <div class="form-field">
-                            <input type="submit" name="submit" id="submit" value="Create Order" required>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="my-order">
-                <table border="1" id="parcelTable">
-                    <thead>
-                        <tr>
-                            <th>S/N</th>
-                            <th>Recipient</th>
-                            <th>weight</th>
-                            <th>City of Destination</th>
-                            <th>Pickup location</th>
-                            <th>Recipient Phone number</th>
-                            <th>$ Price</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-                <p class="parcelBody"></p>
-                <div class="parcelFormat">
-                    <select id="pFormat"></select>
-                    <div class="parcelTemp"></div>
-                </div>
-            </div>
-            <details class="records {
-            ">
-                <summary>Order records</summary>
-                <p class="order-record"></p>
-            </details>
+  <header>
+    <nav>
+      <a class="navbar-brand" href="index.html">
+        <img class="img-responsive" src="../asset/img/logo.jpg" width="80px" alt="SendIT logo">
+      </a>
+      <div class="navbar">
+        <a href="./home.html">Home</a>
+        <a href="getQuotes.html">Get Quotation</a>
+        <div class="dropdown">
+          <button class="dropbtn">My Account
+            <!-- <i class="fa fa-caret-down"></i> -->
+          </button>
+          <div class="dropdown-content">
+            <a href="#">Profile</a>
+            <a href="./dashboard.html">Dashboard</a>
+            <a class="btn logout" href="../index.html">Logout</a>
+          </div>
         </div>
+      </div>
+      <div class="bar-container" onclick="toggler(this)">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+
+      <!-- side navigation -->
+      <div class="side-dropdown">
+        <a href="./home.html">Home</a>
+        <button class="dropbtn" onclick="myFunction()"> My account</button>
+        <div id="myDropdown" class="dropdown-content">
+          <a class="nav-link" href="#">Get Quotes</a>
+          <a href="nav-link" href="#">Profile</a>
+          <a class="nav-link" href="./dashboard.html">Dashboard</a>
+          <a class="nav-link logout" href="../index.html">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="parcel-delivery">
+      <div class="order-form">
+        <div class="form-title modal-content">
+          <p>ORDERS AND DELIVERIES </p>
+        </div>
+      </div>
+      <div class="createOrder">
+        <button class="create-order">Create Order</button>
+      </div>
+      <div class="noti-panel">
+        <p class="notification"></p>
+        <span class="closeNote">&times;</span>
+      </div>
+      <div class="bg-modal">
+        <div class="order-form modal-contents">
+          <div class="close">+</div>
+          <form action="#" onsubmit="event.preventDefault();">
+            <div class="form-field">
+              <input type="text" name="recipient" id="recipient" placeholder="Recipient Name" required>
+            </div>
+            <div class="form-field">
+              <input type="text" name="destination" class="place" id="destination" placeholder="Destination" required>
+            </div>
+            <div class="form-field">
+              <input type="number" name="weight" id="weight" placeholder="Weight in KG" required>
+            </div>
+            <div class="form-field">
+              <input type="tel" name="phone" id="phone" required>
+            </div>
+            <div class="form-field">
+              <input type="text" name="location" id="pickup" class="place" placeholder="Pickup location" required>
+            </div>
+            <div class="form-field">
+              <input type="submit" name="submit" id="submit" value="Create Order" required>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="my-order">
+        <table border="1" id="parcelTable">
+          <thead>
+            <tr>
+              <th>S/N</th>
+              <th>Recipient</th>
+              <th>weight</th>
+              <th>City of Destination</th>
+              <th>Pickup location</th>
+              <th>Recipient Phone number</th>
+              <th>$ Price</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <p class="parcelBody"></p>
+        <div class="parcelFormat">
+          <select id="pFormat"></select>
+          <div class="parcelTemp"></div>
+        </div>
+      </div>
+      <details class="records {
+            ">
+        <summary>Order records</summary>
+        <p class="order-record"></p>
+      </details>
     </div>
-    <script src="../asset/js/intlTelInput.js"></script>
-    <script src="../asset/js/number.js"></script>
-    <script src="../asset/js/toggle.js"></script>
-    <script type="module" src="../asset/js/createParcel.js"></script>
-    <script src="../asset/js/fetchParcel.js"></script>
-    <script type="module" src="../asset/js/logout.js"></script>
+
+  </div>
+  <script src="../asset/js/intlTelInput.js"></script>
+  <script src="../asset/js/number.js"></script>
+  <script src="../asset/js/toggle.js"></script>
+  <script type="module" src="../asset/js/createParcel.js"></script>
+  <script src="../asset/js/fetchParcel.js"></script>
+  <script type="module" src="../asset/js/logout.js"></script>
 </body>
 
 </html>

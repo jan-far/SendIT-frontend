@@ -6,6 +6,9 @@ const record = document.querySelector('.order-record');
 const pBody = document.querySelector('.parcelBody');
 const pTable = document.querySelector('#parcelTable');
 const parcelFormat = document.querySelector('#pFormat');
+const notiPanel = document.querySelector('.noti-panel');
+const notification = document.querySelector('.notification');
+const span = document.querySelector('.close');
 const url = getHostUrl();
 const token = getCookie('session_');
 const parcels = {};
@@ -17,6 +20,13 @@ let search;
 let width;
 let tCount;
 let l;
+
+notiPanel.style.display = 'none';
+
+span.onclick = () => {
+  notiPanel.style.display = 'none';
+};
+
 
 function autocompletePlace() {
   const input = document.querySelector('.place')
@@ -190,7 +200,7 @@ async function Delete(td) {
     //   pBody.innerHTML = 'none';
     // }
   }
-  
+
   parcelFormat.innerHTML = option;
 
   // Set new cokkies off the new parcel ID
@@ -206,7 +216,7 @@ async function Delete(td) {
     refresh(td)
     l = tCount - 1;
 
-    if (l <= 1 ) {
+    if (l <= 1) {
       pBody.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
       pBody.style.display = 'flex';
       pTable.style.display = 'none';
@@ -242,6 +252,30 @@ async function deleteParcel(td) {
     const data = await result;
 
     // console.log(data);
+    const succ = () => {
+      notiPanel.classList.add('successful');
+      notiPanel.classList.remove('failed');
+      notiPanel.style.display = 'flex';
+      notification.innerHTML = `${data.message}`;
+    }
+
+    const fail = () => {
+      notiPanel.classList.remove('successful');
+      notiPanel.classList.add('failed');
+      notiPanel.style.display = 'flex';
+      notification.innerHTML = `${data.message}`;
+    }
+
+    if (res.status === 200) {
+      setTimeout(() => {
+        notiPanel.style.display = 'none';
+      }, 5000, succ())
+    } else {
+      setTimeout(() => {
+        notiPanel.style.display = 'none';
+      }, 5000, fail())
+    }
+
 
   } catch (err) {
     console.log(err);
@@ -332,7 +366,7 @@ async function mDelete(td) {
 
     // Assign values to the option ta for mobile view
     option += `<option value="${i + 1}">${i + 1}</option>`
-  }  
+  }
   // parcelFormat.innerHTML = option;
 
   // Set new cokkies off the new parcel ID
@@ -344,14 +378,14 @@ async function mDelete(td) {
     // refresh(td);
 
     // if (width <= 480) {
-      if (td.parentElement.parentElement.parentElement.childNodes[1]) {
-        // selectedRow.childNodes[5].textContent.split(':')[1] = pair[1]
+    if (td.parentElement.parentElement.parentElement.childNodes[1]) {
+      // selectedRow.childNodes[5].textContent.split(':')[1] = pair[1]
 
-        // delete td.parentElement.parentElement.parentElement.childNodes[1].childNodes[selected + 1]
-        console.log('deleted')
+      // delete td.parentElement.parentElement.parentElement.childNodes[1].childNodes[selected + 1]
+      console.log('deleted')
 
-        parcelFormat.remove(selected)
-      }
+      parcelFormat.remove(selected)
+    }
     // }
   }
   console.log(td.parentElement.parentElement.parentElement.childNodes[1].childNodes)

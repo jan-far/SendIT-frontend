@@ -14,6 +14,9 @@ const pMobile = document.querySelector('.parcelFormat');
 const parcelFormat = document.querySelector('#pFormat');
 const parcelTemp = document.querySelector('.parcelTemp');
 const table = document.getElementById('parcelTable').getElementsByTagName('tbody')[0]
+const notiPanel = document.querySelector('.noti-panel');
+const notification = document.querySelector('.notification');
+const span = document.querySelector('.closeNote');
 const parcels = {};
 let parcelHolder = {};
 let cell0;
@@ -22,6 +25,12 @@ let search;
 let row;
 let width;
 let l;
+
+notiPanel.style.display = 'none';
+
+span.onclick = () => {
+  notiPanel.style.display = 'none';
+};
 
 let count = 0;
 // const l = Object.keys(JSON.parse(API.getCookie('parcels'))).length
@@ -152,7 +161,7 @@ window.addEventListener('load', async () => {
       insertnewRow(data.rows[i]);
 
       if (data.rows[i].status === "delivered") {
-        const index = i+1
+        const index = i + 1
         let editCell = table.childNodes[index].childNodes[7].firstChild
         editCell.setAttribute('disabled', true);
         editCell.classList.add('disabled');
@@ -310,8 +319,26 @@ form.addEventListener('submit', async () => {
       modal.style.display = "none";
       resetForm();
 
+      const succ = () => {
+        notiPanel.classList.add('successful');
+        notiPanel.classList.remove('failed');
+        notiPanel.style.display = 'flex';
+        notification.innerHTML = `${data.message}`;
+      }
+  
+      const fail = () => {
+        notiPanel.classList.remove('successful');
+        notiPanel.classList.add('failed');
+        notiPanel.style.display = 'flex';
+        notification.innerHTML = `${data.message}`;
+      }
+
       if (!res || signup.status === 400) {
         console.log(data.message);
+        setTimeout(() => {
+          notiPanel.style.display = 'none';
+        }, 5000, fail())
+
       } else if (pBody.innerHTML === 'NO PARCEL ORDER HAS BEEN MADE! ' || pBody.textContent === 'NO PARCEL ORDER HAS BEEN MADE! ') {
         // Insert the data created to start
         insertnewRow(data.Parcel);
@@ -325,11 +352,21 @@ form.addEventListener('submit', async () => {
 
         // Record the data
         records(1, 1, 0);
+
+        console.log(data)
+
+        setTimeout(() => {
+          notiPanel.style.display = 'none';
+        }, 5000, succ())
+
       } else {
         insertnewRow(data.Parcel);
         cell0.innerHTML = `${l + 1}`;
 
         // console.log(data)
+        setTimeout(() => {
+          notiPanel.style.display = 'none';
+        }, 5000, succ())
 
         // MObile
         // Assign values to the option ta for mobile view
@@ -385,13 +422,13 @@ async function refresh() {
     //   option += `<option value="${i + 1}">${i + 1}</option>`
 
     // }
-    console.log(pending, delivered,total)
 
-    if (data.rows[i].status !== 'delivered') {
-      return records(total, pending + 1, delivered - 1 )
+    if (data.rows[i].status == 'delivered') {
+      return records(total, pending - 1, delivered + 1)
+    } else if (data.rows[i].status == 'processed') {
+      return records(total + 1, pending + 1, delivered);
     } else {
-      recount += 1;
-      return records(total, pending - 1, delivered + 1);
+      return records(total + 1, pending + 1, delivered);
     }
   }
   API.setCookie('parcels', JSON.stringify(parcels), 1);

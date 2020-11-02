@@ -48,7 +48,7 @@ form.addEventListener('submit', async (e) => {
       notiPanel.style.display = 'flex';
       notification.innerHTML = `${res.message}`;
     } else {
-      console.log(data.Profile.role);
+      // console.log(data.Profile.role);
       if (res.Profile.role === 1) {
         notiPanel.classList.add('successful');
         notiPanel.classList.remove('failed');
@@ -66,7 +66,7 @@ form.addEventListener('submit', async (e) => {
         notification.innerHTML = `Welcome Back Admin!`;
         API.setCookie('session_', `${res.Profile.token}`, 3);
         setTimeout(function () {
-          window.location.href = '../admin/admin.html';
+          window.location.href = '../admin/dashboard.html';
         }, 3000);
         return;
       }
