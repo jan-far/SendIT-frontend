@@ -33,7 +33,6 @@ function getHostUrl() {
     window.location.host.indexOf('127.0.0.1') === 0) {
     return 'http://127.0.0.1:3000/api/v1/';
   }
-  console.log('remote host');
   return 'https://sendit-postgres.herokuapp.com/api/v1/';
 }
 

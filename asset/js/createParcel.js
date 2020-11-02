@@ -128,7 +128,7 @@ window.addEventListener('load', async () => {
   if (!result) {
     console.log('error occured');
   } else if (data.rows === [] || data.rowCount === 0) {
-    console.log('an empty data');
+    // console.log('an empty data');
 
     // disable table and mobiles
     pTable.classList.add('disable')

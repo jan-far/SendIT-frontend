@@ -170,6 +170,7 @@ nav {
 
 .parcel-delivery {
   display: flex;
+  margin-top: 6em;
   flex-direction: column;
   place-content: center center;
   place-items: center center;

@@ -28,7 +28,6 @@ function getHostUrl() {
     window.location.host.indexOf('127.0.0.1') === 0) {
     return 'http://127.0.0.1:3000/api/v1/';
   }
-  console.log('remote host');
   return 'https://sendit-postgres.herokuapp.com/api/v1/';
 };
 
@@ -135,7 +134,6 @@ window.addEventListener('load', async () => {
   if (!res) {
     console.log('error occured');
   } else if (rows === [] || rowCount === 0) {
-    console.log('an empty data');
     records(0, 0, 0);
     myOrder.innerHTML = 'NO PARCEL ORDER HAS BEEN MADE! ';
   } else {

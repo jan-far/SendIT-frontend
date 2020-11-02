@@ -60,11 +60,11 @@ async function autoRedirect() {
 
 function logOut() {
   const now = new Date(0);
-  console.log('now', now);
+  // console.log('now', now);
   const expireTime = now.getTime();
   now.setTime(expireTime);
   document.cookie = `${document.cookie};expires=${now.toUTCString()};path=/`;
-  console.log('clear', document.cookie)
+  // console.log('clear', document.cookie)
 }
 
 export default {
