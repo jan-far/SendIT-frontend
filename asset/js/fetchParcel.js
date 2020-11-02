@@ -262,7 +262,7 @@ async function refresh(td) {
     // if (width <= 480) {
     //   return console.log('Screen 480: Not delivered')
     // }
-    return records(total - 1, pending - 1, 0);
+    return records(total - 1, pending - 1, delivered);
   } else {
     // if (width <= 480) {
     //   return console.log('Screen 480: delivered')

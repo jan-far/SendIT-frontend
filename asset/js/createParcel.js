@@ -150,6 +150,14 @@ window.addEventListener('load', async () => {
 
       // insert into table rows
       insertnewRow(data.rows[i]);
+
+      if (data.rows[i].status === "delivered") {
+        const index = i+1
+        let editCell = table.childNodes[index].childNodes[7].firstChild
+        editCell.setAttribute('disabled', true);
+        editCell.classList.add('disabled');
+        // console.log(table.childNodes[index].childNodes[7].firstChild.disabled)
+      }
       // console.log(data.rows[i]);
 
       // save up parcels id
@@ -229,23 +237,24 @@ async function updateParcel() {
   search = new URLSearchParams();
 
   for (const pair of formData) {
-    if (width <= 480) {
-      if (selectedRow.childNodes[11].className) {
-        // selectedRow.childNodes[5].textContent.split(':')[1] = pair[1]
-        // console.log(selectedRow.childNodes[7])
-        selectedRow.childNodes[7].innerHTML = `Destination: ${pair[1].toString().trim()}`
-        // parcelHolder[row].destination = pair[1]
-      }
-    }
-    else if (selectedRow.cells[7].childNodes[0].className) {
-      selectedRow.cells[3].innerHTML = pair[1]
+    // if (width <= 480) {
+    //   if (selectedRow.childNodes[11].className) {
+    //     // selectedRow.childNodes[5].textContent.split(':')[1] = pair[1]
+    //     // console.log(selectedRow.childNodes[7])
+    //     selectedRow.childNodes[7].innerHTML = `Destination: ${pair[1].toString().trim()}`
+    //     // parcelHolder[row].destination = pair[1]
+    //   }
+    // }
+    // else 
+    if (selectedRow.cells[7].childNodes[0].className) {
+      selectedRow.cells[3].innerHTML = pair[1].toLowerCase().trim()
       // parcelHolder[row].destination = pair[1]
       // console.log(parcelHolder[row].destination)
     };
     // }
 
     search.append(pair[0], pair[1].toLowerCase().trim());
-    console.log(pair[0], pair[1]);
+    // console.log(pair[0], pair[1]);
   }
 
   try {
@@ -261,7 +270,7 @@ async function updateParcel() {
 
     if (result) {
       // console.log(result)
-      console.log('Updated');
+      // console.log('Updated');
       resetForm()
     }
   } catch (err) {
@@ -356,6 +365,10 @@ function records(total, pending, delivered) {
 
 // Refresh function to make increament base on order status
 async function refresh() {
+  const pending = parseInt(record.childNodes[1].textContent.split(':')[1].trim());
+  const delivered = parseInt(record.childNodes[3].textContent.split(':')[1].trim());
+  const total = parseInt(record.childNodes[5].textContent.split(':')[1].trim());
+
   let recount = 0;
   const result = await getParcels()
   const data = result;
@@ -372,12 +385,13 @@ async function refresh() {
     //   option += `<option value="${i + 1}">${i + 1}</option>`
 
     // }
+    console.log(pending, delivered,total)
 
     if (data.rows[i].status !== 'delivered') {
-      records(data.rowCount, (count + 1), 0);
+      return records(total, pending + 1, delivered - 1 )
     } else {
       recount += 1;
-      records(data.rowCount, count, recount);
+      return records(total, pending - 1, delivered + 1);
     }
   }
   API.setCookie('parcels', JSON.stringify(parcels), 1);

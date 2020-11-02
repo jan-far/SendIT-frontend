@@ -331,6 +331,14 @@ button {
   display: none;
 }
 
+.disabled {
+  color: grey;
+  /* Show a not-allowed icon */
+  cursor: not-allowed;
+  /* this is to prevent the cursor from pointing */
+  /* pointer-events: none; */
+}
+
 @media(min-width:993px) {
   nav {
     grid-template-columns: 1fr 1fr 1fr;
