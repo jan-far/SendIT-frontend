@@ -277,9 +277,35 @@ async function updateParcel() {
     });
     const result = await res.json();
 
-    if (result) {
+    // Success funtion to enable the notification on successful execution
+    const succ = () => {
+      notiPanel.classList.add('successful');
+      notiPanel.classList.remove('failed');
+      notiPanel.style.display = 'flex';
+      notification.innerHTML = `${result.message}`;
+    }
+
+    // Fail funtion to enable the notification on error
+    const fail = () => {
+      notiPanel.classList.remove('successful');
+      notiPanel.classList.add('failed');
+      notiPanel.style.display = 'flex';
+      notification.innerHTML = `${result.message}`;
+    }
+
+    if (res.status === 200) {
+      // set timeout to remove displat after 5sec
+      setTimeout(() => {
+        notiPanel.style.display = 'none';
+      }, 5000, succ())
       // console.log(result)
       // console.log('Updated');
+      resetForm()
+    } else {
+      // set timeout to remove displat after 5sec
+      setTimeout(() => {
+        notiPanel.style.display = 'none';
+      }, 5000, fail())
       resetForm()
     }
   } catch (err) {
@@ -319,13 +345,15 @@ form.addEventListener('submit', async () => {
       modal.style.display = "none";
       resetForm();
 
+      // Success funtion to enable the notification on successful execution
       const succ = () => {
         notiPanel.classList.add('successful');
         notiPanel.classList.remove('failed');
         notiPanel.style.display = 'flex';
         notification.innerHTML = `${data.message}`;
       }
-  
+
+      // Fail funtion to enable the notification on error
       const fail = () => {
         notiPanel.classList.remove('successful');
         notiPanel.classList.add('failed');
@@ -334,7 +362,9 @@ form.addEventListener('submit', async () => {
       }
 
       if (!res || signup.status === 400) {
-        console.log(data.message);
+        // console.log(data.message);
+
+        // set timeout to remove displat after 5sec
         setTimeout(() => {
           notiPanel.style.display = 'none';
         }, 5000, fail())
@@ -355,6 +385,7 @@ form.addEventListener('submit', async () => {
 
         console.log(data)
 
+        // set timeout to remove displat after 5sec
         setTimeout(() => {
           notiPanel.style.display = 'none';
         }, 5000, succ())
@@ -364,6 +395,8 @@ form.addEventListener('submit', async () => {
         cell0.innerHTML = `${l + 1}`;
 
         // console.log(data)
+
+        // set timeout to remove displat after 5sec
         setTimeout(() => {
           notiPanel.style.display = 'none';
         }, 5000, succ())
