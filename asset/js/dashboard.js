@@ -1,8 +1,8 @@
 import API from './host.js';
 
 const url = API.getHostUrl();
-// const profile = document.querySelector('.profile');
-const profileDetails = document.querySelector('.profile-details');
+const profileDetails = document.querySelector('.myProfile');
+const aside = document.querySelector('.aside');
 const record = document.querySelector('.order-record');
 const profileInfo = document.querySelector('.profile-info');
 const token = API.getCookie('session_');
@@ -12,11 +12,14 @@ const pBody = document.querySelector('.parcelBody');
 API.autoRedirect();
 let count = 0;
 
+
+
 function profileCatch(data) {
   profileInfo.innerHTML = `
+  <span class='closeIt'>&times;</span>
   <form>
   <fieldset>
-    <div class="form-field">
+    <div class="form-field"> 
     <label for="full name">Full Name: </label>
     <input type="text" name="full name" id="email" value="${data.firstname} ${data.lastname}" disabled>
     </div>
@@ -96,12 +99,11 @@ window.onload = async () => {
   // }
 };
 
-profileDetails.addEventListener('toggle', async (e) => {
-  if (e.target.open === false) {
-    profileDetails.classList.remove('above')
-    return;
-  }
-  profileDetails.classList.add('above')
+profileDetails.addEventListener('click', async (e) => {
+  profileInfo.style.display = 'flex';
+  aside.classList.add('set')
+  profileInfo.classList.add('above')
+  
   try {
     const res = await fetch(`${url}users`, {
       headers: {
@@ -114,6 +116,14 @@ profileDetails.addEventListener('toggle', async (e) => {
     const data = result.Profile;
 
     profileCatch(data);
+
+    const closeIt = document.querySelector('.closeIt');
+    
+    // Close the profile pop up
+    closeIt.onclick = () => {
+      profileInfo.style.display = 'none';
+      aside.classList.remove('set')
+    };
   } catch (err) {
     console.log(err);
   }
