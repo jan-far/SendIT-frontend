@@ -15,12 +15,9 @@ span.onclick = () => {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   url = API.getHostUrl();
-  console.log(url);
 
   const formdata = new FormData(form);
   const params = new URLSearchParams();
-
-  // inputs.innerHTML= ""
 
   for (const pairs of formdata) {
     if (pairs[0] === 'email') {

@@ -29,7 +29,7 @@ span.onclick = () => {
 
 
 function autocompletePlace() {
-  const input = document.querySelector('.place')
+  const input = document.querySelector('.place');
   const autocomplete = new google.maps.places.Autocomplete(input);
 }
 

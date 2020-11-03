@@ -312,6 +312,10 @@ table {
         grid-row: 10;
     }
 
+    .profile-details {
+      margin-top: 15%;
+    }
+
     .my-order {
         width: 100%;
         /* overflow-x: scroll; */
