@@ -11,6 +11,7 @@ const pBody = document.querySelector('.parcelBody');
 
 API.autoRedirect();
 let count = 0;
+let width;
 
 function profileCatch(data) {
   profileInfo.innerHTML = `
@@ -62,6 +63,7 @@ function insertParcel(data) {
 }
 
 window.onload = async () => {
+  width = window.innerWidth
   // document.onreadystatechange = async () => {
   // }
   try {
@@ -97,11 +99,24 @@ window.onload = async () => {
   // }
 };
 
+// Window resize event
+window.addEventListener("resize", () => {
+  width = window.innerWidth
+  console.log(width)
+})
+
 profileDetails.addEventListener('click', async (e) => {
   profileInfo.style.display = 'flex';
-  aside.classList.add('set')
-  profileInfo.classList.add('above')
-  
+
+  //  Mobile responsive profile view, by getting the screen width
+  if (width <= 480) {
+    aside.classList.add('set2')
+    profileInfo.classList.add('aside')
+  } else {
+    aside.classList.add('set')
+    profileInfo.classList.add('above')
+  }
+
   try {
     const res = await fetch(`${url}users`, {
       headers: {
@@ -116,11 +131,16 @@ profileDetails.addEventListener('click', async (e) => {
     profileCatch(data);
 
     const closeIt = document.querySelector('.closeIt');
-    
+
     // Close the profile pop up
     closeIt.onclick = () => {
       profileInfo.style.display = 'none';
-      aside.classList.remove('set')
+      //  Mobile responsive profile view, by getting the screen width
+      if (width <= 480) {
+        aside.classList.remove('set2')
+      } else {
+        aside.classList.remove('set')
+      }
     };
   } catch (err) {
     console.log(err);

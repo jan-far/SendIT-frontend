@@ -367,7 +367,12 @@ form.addEventListener('submit', async () => {
         // set timeout to remove display after 5sec
         setTimeout(() => {
           notiPanel.style.display = 'none';
-        }, 5000, fail())
+        }, 5000, (() => {
+          notiPanel.classList.remove('successful');
+          notiPanel.classList.add('failed');
+          notiPanel.style.display = 'flex';
+          notification.innerHTML = 'rror Creating parcel. Please try again!';
+        }))
 
       } else if (pBody.innerHTML === 'NO PARCEL ORDER HAS BEEN MADE! ' || pBody.textContent === 'NO PARCEL ORDER HAS BEEN MADE! ') {
         // Insert the data created to start
