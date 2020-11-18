@@ -289,7 +289,7 @@ tbody>tr>td {
   z-index: 1;
   background: rgba(10, 10, 10, 0.9);
   left: 0;
-  top: 0;
+  top: -10;
   width: 100%;
   height: 150vh;
   overflow: auto;
@@ -306,7 +306,7 @@ tbody>tr>td {
 
 @media(min-width:993px) {
   nav {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr auto;
   }
 
   .navbar {
@@ -320,7 +320,7 @@ tbody>tr>td {
 
 @media(max-width:992px) {
   nav {
-    grid-template-columns: .1fr 1fr .2fr;
+    grid-template-columns: .1fr 1fr auto;
   }
 }
 

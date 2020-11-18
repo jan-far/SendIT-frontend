@@ -20,7 +20,7 @@ header {
 nav {
   display: grid;
   grid-template-columns: 1fr .8fr .3fr;
-  padding: 15px 20px 15px 20px;
+  padding: 5px 20px 5px 20px;
   background: linear-gradient(darkviolet, purple);
   align-items: center;
 }
@@ -382,7 +382,7 @@ button {
 
 @media(min-width:993px) {
   nav {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr auto;
   }
 
   .navbar {
@@ -392,7 +392,7 @@ button {
 
 @media(max-width:992px) {
   nav {
-    grid-template-columns: 1fr .2fr 1fr;
+    grid-template-columns: .1fr 1fr auto;
   }
   
   .navbar {

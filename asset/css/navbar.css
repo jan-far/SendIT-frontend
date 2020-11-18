@@ -196,7 +196,7 @@ a {
 
 @media(max-width:992px) {
     nav {
-        grid-template-columns: .1fr 1fr .2fr;
+        grid-template-columns: .1fr 1fr auto;
     }
 }
 

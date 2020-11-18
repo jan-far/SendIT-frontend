@@ -102,7 +102,6 @@ window.onload = async () => {
 // Window resize event
 window.addEventListener("resize", () => {
   width = window.innerWidth
-  console.log(width)
 })
 
 profileDetails.addEventListener('click', async (e) => {
