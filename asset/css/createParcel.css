@@ -394,10 +394,6 @@ button {
   nav {
     grid-template-columns: .1fr 1fr auto;
   }
-  
-  .navbar {
-    grid-column: 3;
-  }
 }
 
 /* @media screen and (max-width:480px) {
