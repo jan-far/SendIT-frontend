@@ -12,8 +12,6 @@ const pBody = document.querySelector('.parcelBody');
 API.autoRedirect();
 let count = 0;
 
-
-
 function profileCatch(data) {
   profileInfo.innerHTML = `
   <span class='closeIt'>&times;</span>

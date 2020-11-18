@@ -39,33 +39,51 @@ form.addEventListener('submit', async (e) => {
     const res = await req.json();
     const data = await res;
 
-    if (data === undefined || req.status === 400) {
-      notiPanel.classList.add('failed');
-      notiPanel.classList.remove('successful');
+    // Success funtion to enable the notification on successful execution
+    const succ = () => {
+      notiPanel.classList.add('successful');
+      notiPanel.classList.remove('failed');
       notiPanel.style.display = 'flex';
-      notification.innerHTML = `${res.message}`;
+      notification.innerHTML = `${data.message}`;
+    }
+
+    // Fail funtion to enable the notification on error
+    const fail = () => {
+      notiPanel.classList.remove('successful');
+      notiPanel.classList.add('failed');
+      notiPanel.style.display = 'flex';
+      notification.innerHTML = `${data.message}`;
+    }
+
+    if (data === undefined || req.status === 400) {
+      // On failed request
+      setTimeout(() => {
+        notiPanel.style.display = 'none';
+      }, 3000, fail())
     } else {
       // console.log(data.Profile.role);
       if (res.Profile.role === 1) {
-        notiPanel.classList.add('successful');
-        notiPanel.classList.remove('failed');
-        notiPanel.style.display = 'flex';
-        notification.innerHTML = `${res.message}`;
+        // on successful request
+        setTimeout(() => {
+          notiPanel.style.display = 'none';
+        }, 3000, succ());
+
         API.setCookie('session_', `${res.Profile.token}`, 3);
+
         setTimeout(function () {
           window.location.href = '../pages/dashboard.html';
         }, 3000);
-        return;
       } else {
-        notiPanel.classList.add('successful');
-        notiPanel.classList.remove('failed');
-        notiPanel.style.display = 'flex';
-        notification.innerHTML = `Admin? You'll be redirected shortly!`;
+        //  on successful request
+        setTimeout(() => {
+          notiPanel.style.display = 'none';
+        }, 3000, succ())
+
         API.setCookie('session_', `${res.Profile.token}`, 3);
+
         setTimeout(function () {
           window.location.href = '../admin';
         }, 3000);
-        return;
       }
     }
   } catch (err) {

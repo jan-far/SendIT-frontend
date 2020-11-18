@@ -27,10 +27,17 @@ span.onclick = () => {
   notiPanel.style.display = 'none';
 };
 
-
 function autocompletePlace() {
-  const input = document.querySelector('.place');
-  const autocomplete = new google.maps.places.Autocomplete(input);
+  const input = document.querySelectorAll('.place');
+  // const autocomplete = new google.maps.places.Autocomplete(input);
+  let autocompletes = [];
+
+  for (let i = 0; i < input.length; i++) {
+    let autocomplete = new google.maps.places.Autocomplete(input[i])
+    autocomplete.inputId = input[i].id;
+    // autocomplete.addListener = ('place_changed', fillInAddress());
+    autocompletes.push(autocomplete);
+  }
 }
 
 // Window resize event
@@ -252,6 +259,7 @@ async function deleteParcel(td) {
     const data = await result;
 
     // console.log(data);
+    // Success funtion to enable the notification on successful execution
     const succ = () => {
       notiPanel.classList.add('successful');
       notiPanel.classList.remove('failed');
@@ -259,6 +267,7 @@ async function deleteParcel(td) {
       notification.innerHTML = `${data.message}`;
     }
 
+    // Fail funtion to enable the notification on error
     const fail = () => {
       notiPanel.classList.remove('successful');
       notiPanel.classList.add('failed');

@@ -362,9 +362,9 @@ form.addEventListener('submit', async () => {
       }
 
       if (!res || signup.status === 400) {
-        // console.log(data.message);
+        console.log(data.message);
 
-        // set timeout to remove displat after 5sec
+        // set timeout to remove display after 5sec
         setTimeout(() => {
           notiPanel.style.display = 'none';
         }, 5000, fail())
