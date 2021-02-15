@@ -26,7 +26,7 @@ document.querySelector('.close').addEventListener("click", () => {
 function getHostUrl() {
   if (window.location.host.indexOf('localhost') === 0 ||
     window.location.host.indexOf('127.0.0.1') === 0) {
-    return 'http://127.0.0.1:3000/api/v1/';
+    return 'http://127.0.0.1:3001/api/v1/';
   }
   return 'https://sendit-postgres.herokuapp.com/api/v1/';
 };
@@ -270,7 +270,7 @@ async function Updates() {
       search.append(pair[0], pair[1].toLowerCase().trim());
 
       const result = await UpdateLocation(search);
-      console.log(result.message)
+      // console.log(result.message)
     };
 
     if (pair[0] === 'status') {
@@ -278,7 +278,7 @@ async function Updates() {
       search.append(pair[0], pair[1].toLowerCase().trim());
 
       const result = await UpdateStatus(search);
-      console.log(result.message)
+      // console.log(result.message)
     }
   }
 };
@@ -287,7 +287,7 @@ async function Updates() {
 function Table(data) {
   return (`
 <div class='my-order'>
-<caption>USER: ${data.firstname} ${data.lastname}</caption>
+<caption>USER: ${data.firstname} ${data.lastname} <br>&nbsp;</br> Email: ${data.email}</caption>
 <table border="1" id=parcelTable>
     <thead>
     <tr>

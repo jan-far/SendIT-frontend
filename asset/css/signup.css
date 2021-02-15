@@ -73,6 +73,11 @@ p {
   transition: all 0.5s ease;
 }
 
+.logo {
+  z-index: 100;
+  margin-bottom: 5px;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -103,6 +108,7 @@ fieldset {
   border-radius: 2px;
   padding: 10px;
   width: 350px;
+  margin: 10px 0px;
   font: 1em sans-serif;
 }
 
@@ -120,30 +126,35 @@ fieldset {
 
 #submit {
   border-radius: 10px;
-  padding: 10px 25px;
+  padding: 15px 25px;
   margin: 10px;
   color: #FFF;
   width: initial !important;
-  background-color: green;
+  background-color: rgb(2, 139, 2);
 }
 
 #submit:hover {
   cursor: pointer;
-  background-color: lawngreen;
+  background-color: rgb(92, 158, 25);
   color: black;
-  transform: scale(.9);
+  transform: scale(.97);
 }
 
 @media screen and (max-width: 768px) {
   body {
     background-image: unset;
-    background: linear-gradient(green, rgb(97, 88, 88), rgb(182, 129, 30));
+    background: linear-gradient(to bottom left, rgb(23, 92, 5), rgb(10, 48, 13), rgb(10, 77, 10));
     animation: actives .5s linear;
+  }
+
+  .signUp>p {
+    color: aliceblue;
   }
 
   .form {
     overflow-y: auto;
-    overflow: hidden;
+    overflow-x: hidden;
+    height: 100vh;
   }
 
   .signIn {
@@ -153,12 +164,12 @@ fieldset {
   }
 
   .logo {
-    margin: 10% 0 auto;
+    margin-bottom: -15px!important;
     padding-bottom: 20px;
   }
 
   .signUp>p>a:hover {
-    color: red;
+    color: aliceblue;
   }
 
   fieldset {
@@ -166,7 +177,6 @@ fieldset {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* align-content: center; */
     border-radius: 15px;
     width: 80%;
     border: none;
@@ -174,7 +184,7 @@ fieldset {
   }
 
   .form-field {
-    padding: 10px 20px;
+    padding: 5px 20px;
     align-content: center;
   }
 
@@ -196,11 +206,11 @@ fieldset {
 
 @keyframes actives {
   0% {
-    transform: scale(.5);
+    transform: scale(.6);
   }
 
   50% {
-    transform: scale(.3);
+    transform: scale(.8);
   }
 
   100% {

@@ -308,6 +308,10 @@ button:hover  {
   align-items: center;
 }
 
+.modal-content {
+  color: rgb(109, 47, 5);
+}
+
 .modal-contents {
   background-color: white;
   text-align: center;

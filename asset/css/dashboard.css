@@ -9,14 +9,22 @@ body {
   background-image: url("../img/bg3d.jpg");
   background-position: center;
   background-repeat: no-repeat;
-  background-color: black;
   background-size: cover;
   align-items: center;
   justify-items: center;
-  color: blanchedalmond;
-  /* overflow: hidden;
-    box-sizing: border-box;
-    -ms-overflow-style: none; */
+  color: aliceblue;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100vh;
+  z-index: -100;
+  background: linear-gradient(180deg, rgb(56, 2, 56), rgb(17, 0, 31), rgb(54, 5, 54));
 }
 
 header {
@@ -33,7 +41,7 @@ nav {
   display: grid;
   grid-template-columns: .8fr .3fr;
   padding: 5px 20px 5px 20px;
-  background: linear-gradient(darkviolet, purple);
+  background: linear-gradient(rgb(69, 36, 83), purple);
   align-items: center;
 }
 

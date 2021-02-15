@@ -21,7 +21,7 @@ nav {
   display: grid;
   grid-template-columns: 1fr .8fr .3fr;
   padding: 5px 20px 5px 20px;
-  background: linear-gradient(darkviolet, purple);
+  background: linear-gradient(rgb(69, 36, 83), purple);
   align-items: center;
 }
 

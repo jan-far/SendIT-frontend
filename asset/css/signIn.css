@@ -1,6 +1,4 @@
 * {
-  /* margin: 0;
-    padding: 0; */
   box-sizing: border-box;
 }
 
@@ -95,7 +93,7 @@ fieldset>p {
 }
 
 fieldset>p>a:hover {
-  color: red;
+  color: rgb(218, 59, 59);
   font-weight: bold;
 }
 
@@ -103,6 +101,10 @@ fieldset>p>a:hover {
   padding: 10px 20px;
   align-content: center;
   text-align: center;
+}
+
+.form-field input:invalid {
+  background-color: rgb(106, 194, 34);
 }
 
 .form-field input {
@@ -119,13 +121,14 @@ fieldset>p>a:hover {
   padding: 10px 25px;
   margin-top: 15px;
   width: initial !important;
-  /* background-color: lawngreen; */
+  background-color: rgb(82, 119, 44);
+  color: aliceblue;
 }
 
 #submit:hover {
   cursor: pointer;
-  background-color: green;
-  color: greenyellow;
+  background-color: rgb(75, 156, 75);
+  color: rgb(5, 22, 3);
   transform: scale(1.1);
 }
 
@@ -175,10 +178,11 @@ fieldset>p>a:hover {
 
   body {
     background-image: unset;
-    background: radial-gradient(yellow, yellowgreen, green, rgb(0, 0, 0));
-    animation: actives .4s linear;
+    background: linear-gradient(to bottom left, rgb(23, 92, 5), rgb(10, 48, 13), rgb(10, 77, 10));
+    animation: actives .3s linear;
     background-repeat: unset;
     background-size: unset;
+    height: 100vh;
   }
 
   .signIn {
@@ -203,7 +207,7 @@ fieldset>p>a:hover {
   }
 
   fieldset {
-    background-color: lawngreen !important;
+    background-color: rgb(255, 255, 255) !important;
     padding: 10px 20px;
     align-content: center;
     width: 70% !important;
@@ -275,14 +279,14 @@ fieldset>p>a:hover {
 
 @keyframes actives {
   0% {
-    transform: rotate(120deg);
+    transform: scale(.6);
   }
 
   50% {
-    transform: rotate(240deg);
+    transform: scale(.8);
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: scale(1);
   }
 }

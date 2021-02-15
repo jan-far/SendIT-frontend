@@ -81,6 +81,7 @@ form.addEventListener('submit', async (e) => {
 
         API.setCookie('session_', `${res.Profile.token}`, 3);
 
+        //  Redirecting to admin route
         setTimeout(function () {
           window.location.href = '../admin';
         }, 3000);

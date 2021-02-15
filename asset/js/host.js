@@ -1,7 +1,7 @@
 function getHostUrl() {
   if (window.location.host.indexOf('127.0.0.1') === 0 ||
     window.location.host.indexOf('localhost') === 0) {
-    return 'http://127.0.0.1:3000/api/v1/';
+    return 'http://127.0.0.1:3001/api/v1/';
   }
   return 'https://sendit-postgres.herokuapp.com/api/v1/';
 }

@@ -20,7 +20,7 @@
         <img class="img-responsive" src="../asset/img/logo.jpg" width="80px" alt="SendIT logo">
       </a>
       <div class="navbar">
-        <a href="./home.html">Home</a>
+        <a href="../index.html">Home</a>
         <a href="getQuotes.html">Get Quotation</a>
         <div class="dropdown">
           <button class="dropbtn">My Account
@@ -41,7 +41,7 @@
 
       <!-- side navigation -->
       <div class="side-dropdown">
-        <a href="./home.html">Home</a>
+        <a href="../index.html">Home</a>
         <button class="dropbtn" onclick="myFunction()"> My account</button>
         <div id="myDropdown" class="dropdown-content">
           <a class="nav-link" href="#">Get Quotes</a>
@@ -79,7 +79,12 @@
                 <input type="text" name="location" id="pickup" class="place" placeholder="Pickup location" required>
               </div>
               <div class="form-field">
-                <input type="text" name="status" id="status" class="status" placeholder="status required">
+                <input list="status" name="status" id="status" class="status" placeholder="status required" required>
+                <datalist id="status">
+                  <option value="delivered">
+                  <option value="pending">
+                  <option value="processing">
+                </datalist>
               </div>
               <div class="form-field">
                 <input type="submit" name="submit" id="submit" value="Create Order" required>
