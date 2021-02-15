@@ -1,26 +1,30 @@
-const sidenav = document.querySelector('.sidemenu');
-const token = sessionStorage.getItem('session_');
-const url = 'http://127.0.0.1:3000/api/v1/';
-
-const toggler = (x) => {
-  x.classList.toggle('change');
-  sidenav.classList.toggle('active');
-};
+import API from './host.js';
+const token = API.getCookie('session_');
+const url = 'http://127.0.0.1:3001/api/v1/';
 
 async function isLoggedIn() {
   if (!token) return false;
 
   // Checks validity of token
-  const res = await fetch(`${url}users`, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'x-access-token': `${token}`,
-    },
-    method: 'GET',
-  });
-  const result = await res.json();
-  sessionStorage.setItem('session_', result.Token);
-  return true;
+  try {
+    const res = await fetch(`${url}users`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-access-token': `${token}`,
+      },
+      method: 'GET',
+    });
+    const result = await res.json();
+    if (res.status === 200) {
+      API.setCookie('session_', result.Token, 1);
+      return true;
+    } else {
+      sessionStorage.clear();
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function autoRedirect() {
