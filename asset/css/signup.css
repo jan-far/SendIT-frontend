@@ -18,9 +18,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-items: center;
   justify-content: center;
-  align-content: center;
+  overflow-x: hidden;
 }
 
 .signTitle {
@@ -81,15 +80,14 @@ p {
 form {
   display: flex;
   flex-direction: column;
-  align-content: center;
   justify-content: center;
   align-items: center;
-  justify-items: center;
+  margin: 0 12px;
 }
 
 fieldset {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 20px;
   width: 80%;
   border: none;
   padding: 20px auto;
@@ -105,8 +103,8 @@ fieldset {
 
 .form-field input {
   border: 1px solid #CCC !important;
-  border-radius: 2px;
-  padding: 10px;
+  border-radius: 5px;
+  padding: 12px 15px;
   width: 350px;
   margin: 10px 0px;
   font: 1em sans-serif;
@@ -164,7 +162,7 @@ fieldset {
   }
 
   .logo {
-    margin-bottom: -15px!important;
+    margin-bottom: -15px !important;
     padding-bottom: 20px;
   }
 
@@ -194,8 +192,6 @@ fieldset {
     padding: 5px 25px;
     width: initial !important;
   }
-
-
 }
 
 @media screen and (max-width: 360px) {
